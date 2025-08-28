@@ -2453,7 +2453,7 @@ function Library.new(config)
 					dropdownFrame.Name = "MultiSelectDropdown"
 					dropdownFrame.Parent = ScreenGui
 					dropdownFrame.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-					dropdownFrame.BackgroundTransparency = 0.100
+					dropdownFrame.BackgroundTransparency = 0.800
 					dropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					dropdownFrame.BorderSizePixel = 0
 					dropdownFrame.Position = UDim2.new(0, 0, 0, 0)
@@ -2501,15 +2501,15 @@ function Library.new(config)
 					CloseButton.Name = "CloseButton"
 					CloseButton.Parent = dropdownFrame
 					CloseButton.AnchorPoint = Vector2.new(1, 0)
-					CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-					CloseButton.BackgroundTransparency = 0.500
+					CloseButton.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+					CloseButton.BackgroundTransparency = 0.200
 					CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					CloseButton.BorderSizePixel = 0
 					CloseButton.Position = UDim2.new(1, -5, 0, 5)
 					CloseButton.Size = UDim2.new(0, 20, 0, 20)
 					CloseButton.ZIndex = 101
 					CloseButton.Font = Enum.Font.GothamBold
-					CloseButton.Text = "X"
+					CloseButton.Text = "×"
 					CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 					CloseButton.TextScaled = true
 					CloseButton.TextSize = 14.000
@@ -2550,7 +2550,7 @@ function Library.new(config)
 
 						itemFrame.Name = "ItemFrame"
 						itemFrame.Parent = ScrollingFrame
-						itemFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+						itemFrame.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 						itemFrame.BackgroundTransparency = 0.800
 						itemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 						itemFrame.BorderSizePixel = 0
@@ -2563,8 +2563,8 @@ function Library.new(config)
 						Checkbox.Name = "Checkbox"
 						Checkbox.Parent = itemFrame
 						Checkbox.AnchorPoint = Vector2.new(0, 0.5)
-						Checkbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						Checkbox.BackgroundTransparency = 0.800
+						Checkbox.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+						Checkbox.BackgroundTransparency = 0.200
 						Checkbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
 						Checkbox.BorderSizePixel = 0
 						Checkbox.Position = UDim2.new(0.0250000004, 0, 0.5, 0)
@@ -2590,7 +2590,7 @@ function Library.new(config)
 						CheckMark.ZIndex = 105
 						CheckMark.Font = Enum.Font.GothamBold
 						CheckMark.Text = "✓"
-						CheckMark.TextColor3 = Color3.fromRGB(0, 255, 0)
+						CheckMark.TextColor3 = Color3.fromRGB(255, 255, 255)
 						CheckMark.TextScaled = true
 						CheckMark.TextSize = 14.000
 
@@ -2629,9 +2629,9 @@ function Library.new(config)
 						local isSelected = table.find(selectedItems, item) ~= nil
 						CheckMark.Visible = isSelected
 						if isSelected then
-							Checkbox.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+							Checkbox.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 						else
-							Checkbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+							Checkbox.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 						end
 
 						-- Handle selection
@@ -2640,12 +2640,12 @@ function Library.new(config)
 							CheckMark.Visible = isSelected
 							
 							if isSelected then
-								Checkbox.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+								Checkbox.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
 								if not table.find(selectedItems, item) then
 									table.insert(selectedItems, item)
 								end
 							else
-								Checkbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+								Checkbox.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 								local index = table.find(selectedItems, item)
 								if index then
 									table.remove(selectedItems, index)
