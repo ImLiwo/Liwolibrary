@@ -2439,271 +2439,55 @@ function Library.new(config)
 					drop.Callback(selectedItems)
 				end
 
-				-- Create custom multi-select dropdown
+				-- Create custom multi-select dropdown using the existing dropdown system
 				local function createMultiSelectDropdown()
-					local dropdownFrame = Instance.new("Frame")
-					local UICorner = Instance.new("UICorner")
-					local DropShadow = Instance.new("ImageLabel")
-					local UIStroke = Instance.new("UIStroke")
-					local ScrollingFrame = Instance.new("ScrollingFrame")
-					local UIListLayout = Instance.new("UIListLayout")
-					local Title = Instance.new("TextLabel")
-					local CloseButton = Instance.new("TextButton")
-
-					dropdownFrame.Name = "MultiSelectDropdown"
-					dropdownFrame.Parent = ScreenGui
-					dropdownFrame.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-					dropdownFrame.BackgroundTransparency = 0.800
-					dropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					dropdownFrame.BorderSizePixel = 0
-					dropdownFrame.Position = UDim2.new(0, 0, 0, 0)
-					dropdownFrame.Size = UDim2.new(0, 200, 0, 250)
-					dropdownFrame.ZIndex = 100
-					dropdownFrame.Visible = false
-
-					UICorner.CornerRadius = UDim.new(0, 4)
-					UICorner.Parent = dropdownFrame
-
-					DropShadow.Name = "DropShadow"
-					DropShadow.Parent = dropdownFrame
-					DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-					DropShadow.BackgroundTransparency = 1.000
-					DropShadow.BorderSizePixel = 0
-					DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-					DropShadow.Size = UDim2.new(1, 47, 1, 47)
-					DropShadow.ZIndex = 99
-					DropShadow.Image = "rbxassetid://6015897843"
-					DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-					DropShadow.ImageTransparency = 0.600
-					DropShadow.ScaleType = Enum.ScaleType.Slice
-					DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-
-					UIStroke.Transparency = 0.900
-					UIStroke.Color = Color3.fromRGB(255, 255, 255)
-					UIStroke.Parent = dropdownFrame
-
-					Title.Name = "Title"
-					Title.Parent = dropdownFrame
-					Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Title.BackgroundTransparency = 1.000
-					Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Title.BorderSizePixel = 0
-					Title.Position = UDim2.new(0, 0, 0, 0)
-					Title.Size = UDim2.new(1, 0, 0, 30)
-					Title.ZIndex = 101
-					Title.Font = Enum.Font.GothamBold
-					Title.Text = drop.Title
-					Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-					Title.TextScaled = true
-					Title.TextSize = 14.000
-					Title.TextWrapped = true
-
-					CloseButton.Name = "CloseButton"
-					CloseButton.Parent = dropdownFrame
-					CloseButton.AnchorPoint = Vector2.new(1, 0)
-					CloseButton.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-					CloseButton.BackgroundTransparency = 0.200
-					CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					CloseButton.BorderSizePixel = 0
-					CloseButton.Position = UDim2.new(1, -5, 0, 5)
-					CloseButton.Size = UDim2.new(0, 20, 0, 20)
-					CloseButton.ZIndex = 101
-					CloseButton.Font = Enum.Font.GothamBold
-					CloseButton.Text = "×"
-					CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-					CloseButton.TextScaled = true
-					CloseButton.TextSize = 14.000
-
-					ScrollingFrame.Parent = dropdownFrame
-					ScrollingFrame.Active = true
-					ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-					ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					ScrollingFrame.BackgroundTransparency = 1.000
-					ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					ScrollingFrame.BorderSizePixel = 0
-					ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-					ScrollingFrame.Size = UDim2.new(0.949999988, 0, 0.880000012, 0)
-					ScrollingFrame.ZIndex = 102
-					ScrollingFrame.BottomImage = ""
-					ScrollingFrame.ScrollBarThickness = 6
-					ScrollingFrame.TopImage = ""
-
-					UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
-						ScrollingFrame.CanvasSize = UDim2.fromOffset(0,UIListLayout.AbsoluteContentSize.Y)
-					end)
-
-					UIListLayout.Parent = ScrollingFrame
-					UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-					UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-					UIListLayout.Padding = UDim.new(0, 4)
-
-					-- Create checkboxes for each item
-					for _, item in pairs(drop.Data) do
-						local itemFrame = Instance.new("Frame")
-						local UICorner = Instance.new("UICorner")
-						local Checkbox = Instance.new("Frame")
-						local UICorner_2 = Instance.new("UICorner")
-						local UIStroke = Instance.new("UIStroke")
-						local CheckMark = Instance.new("TextLabel")
-						local ItemText = Instance.new("TextLabel")
-						local SelectButton = Instance.new("TextButton")
-
-						itemFrame.Name = "ItemFrame"
-						itemFrame.Parent = ScrollingFrame
-						itemFrame.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-						itemFrame.BackgroundTransparency = 0.800
-						itemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						itemFrame.BorderSizePixel = 0
-						itemFrame.Size = UDim2.new(0.949999988, 0, 0, 30)
-						itemFrame.ZIndex = 103
-
-						UICorner.CornerRadius = UDim.new(0, 3)
-						UICorner.Parent = itemFrame
-
-						Checkbox.Name = "Checkbox"
-						Checkbox.Parent = itemFrame
-						Checkbox.AnchorPoint = Vector2.new(0, 0.5)
-						Checkbox.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-						Checkbox.BackgroundTransparency = 0.200
-						Checkbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						Checkbox.BorderSizePixel = 0
-						Checkbox.Position = UDim2.new(0.0250000004, 0, 0.5, 0)
-						Checkbox.Size = UDim2.new(0, 20, 0, 20)
-						Checkbox.ZIndex = 104
-
-						UICorner_2.CornerRadius = UDim.new(0, 2)
-						UICorner_2.Parent = Checkbox
-
-						UIStroke.Transparency = 0.800
-						UIStroke.Color = Color3.fromRGB(255, 255, 255)
-						UIStroke.Parent = Checkbox
-
-						CheckMark.Name = "CheckMark"
-						CheckMark.Parent = Checkbox
-						CheckMark.AnchorPoint = Vector2.new(0.5, 0.5)
-						CheckMark.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						CheckMark.BackgroundTransparency = 1.000
-						CheckMark.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						CheckMark.BorderSizePixel = 0
-						CheckMark.Position = UDim2.new(0.5, 0, 0.5, 0)
-						CheckMark.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
-						CheckMark.ZIndex = 105
-						CheckMark.Font = Enum.Font.GothamBold
-						CheckMark.Text = "✓"
-						CheckMark.TextColor3 = Color3.fromRGB(255, 255, 255)
-						CheckMark.TextScaled = true
-						CheckMark.TextSize = 14.000
-
-						ItemText.Name = "ItemText"
-						ItemText.Parent = itemFrame
-						ItemText.AnchorPoint = Vector2.new(0, 0.5)
-						ItemText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						ItemText.BackgroundTransparency = 1.000
-						ItemText.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						ItemText.BorderSizePixel = 0
-						ItemText.Position = UDim2.new(0.125, 0, 0.5, 0)
-						ItemText.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
-						ItemText.ZIndex = 104
-						ItemText.Font = Enum.Font.GothamBold
-						ItemText.Text = item
-						ItemText.TextColor3 = Color3.fromRGB(255, 255, 255)
-						ItemText.TextScaled = true
-						ItemText.TextSize = 14.000
-						ItemText.TextWrapped = true
-						ItemText.TextXAlignment = Enum.TextXAlignment.Left
-
-						SelectButton.Name = "SelectButton"
-						SelectButton.Parent = itemFrame
-						SelectButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-						SelectButton.BackgroundTransparency = 1.000
-						SelectButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						SelectButton.BorderSizePixel = 0
-						SelectButton.Size = UDim2.new(1, 0, 1, 0)
-						SelectButton.ZIndex = 105
-						SelectButton.Font = Enum.Font.SourceSans
-						SelectButton.Text = ""
-						SelectButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-						SelectButton.TextSize = 14.000
-
-						-- Set initial state
-						local isSelected = table.find(selectedItems, item) ~= nil
-						CheckMark.Visible = isSelected
-						if isSelected then
-							Checkbox.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-						else
-							Checkbox.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-						end
-
-						-- Handle selection
-						SelectButton.MouseButton1Click:Connect(function()
-							isSelected = not isSelected
-							CheckMark.Visible = isSelected
+					-- Use the existing dropdown system but modify it for multi-select
+					WindowTable.Dropdown:Setup(MFrame)
+					
+					-- Clear existing items
+					for i,v in pairs(WindowTable.Dropdown.ScrollingFrame:GetChildren()) do
+						if v ~= WindowTable.Dropdown.Block then
+							if v:IsA('Frame') then
+								v:Destroy();
+							end;
+						end;
+					end;
+					
+					-- Create multi-select items
+					for i,v in pairs(drop.Data) do
+						local butt = GetSelector(tostring(v), table.find(selectedItems, v) ~= nil);
+						
+						-- Override the click behavior for multi-select
+						butt.button.MouseButton1Click:Connect(function()
+							local isSelected = table.find(selectedItems, v) ~= nil
 							
 							if isSelected then
-								Checkbox.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
-								if not table.find(selectedItems, item) then
-									table.insert(selectedItems, item)
-								end
-							else
-								Checkbox.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-								local index = table.find(selectedItems, item)
+								-- Remove item
+								local index = table.find(selectedItems, v)
 								if index then
 									table.remove(selectedItems, index)
 								end
+								butt.effect(false)
+							else
+								-- Add item
+								table.insert(selectedItems, v)
+								butt.effect(true)
 							end
 							
 							updateDisplayText()
 							drop.Callback(selectedItems)
 						end)
 					end
-
-					-- Close button functionality
-					CloseButton.MouseButton1Click:Connect(function()
-						dropdownFrame.Visible = false
-					end)
-
-					return dropdownFrame
+					
+					-- Show the dropdown
+					WindowTable.Dropdown:Open(drop.Data, "Multi-Select", function() end)
 				end
 
-				-- Store dropdown reference
-				local currentDropdown = nil
+
 
 				-- Button click handler
 				Button.MouseButton1Click:Connect(function()
-					if currentDropdown and currentDropdown.Visible then
-						currentDropdown.Visible = false
-						currentDropdown = nil
-					else
-						if currentDropdown then
-							currentDropdown:Destroy()
-						end
-						
-						currentDropdown = createMultiSelectDropdown()
-						
-						-- Position dropdown near the button
-						local buttonPos = MFrame.AbsolutePosition
-						local buttonSize = MFrame.AbsoluteSize
-						
-						currentDropdown.Position = UDim2.new(0, buttonPos.X, 0, buttonPos.Y + buttonSize.Y + 5)
-						currentDropdown.Size = UDim2.new(0, buttonSize.X, 0, 250)
-						currentDropdown.Visible = true
-					end
-				end)
-
-				-- Close dropdown when clicking outside
-				game:GetService("UserInputService").InputBegan:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						if currentDropdown and currentDropdown.Visible then
-							local mousePos = game:GetService("UserInputService"):GetMouseLocation()
-							local dropdownPos = currentDropdown.AbsolutePosition
-							local dropdownSize = currentDropdown.AbsoluteSize
-							
-							if mousePos.X < dropdownPos.X or mousePos.X > dropdownPos.X + dropdownSize.X or
-							   mousePos.Y < dropdownPos.Y or mousePos.Y > dropdownPos.Y + dropdownSize.Y then
-								currentDropdown.Visible = false
-							end
-						end
-					end
+					createMultiSelectDropdown()
 				end)
 
 				return {
@@ -3283,12 +3067,12 @@ Library.Notification = function()
 	Notification.IgnoreGuiInset = true
 
 	Frame.Parent = Notification
-	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame.AnchorPoint = Vector2.new(0, 1)
 	Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Frame.BackgroundTransparency = 1.000
 	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Frame.BorderSizePixel = 0
-	Frame.Position = UDim2.new(0.151568726, 0, 0.5, 0)
+	Frame.Position = UDim2.new(0, 10, 1, -10)
 	Frame.Size = UDim2.new(0.400000006, 0, 0.400000006, 0)
 	Frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
 
