@@ -2445,32 +2445,121 @@ function Library.new(config)
 					drop.Callback(selectedItems)
 				end
 
-				-- Create custom multi-select dropdown using the existing dropdown system
+				-- Create custom multi-select dropdown
 				local function createMultiSelectDropdown()
-					-- Use the existing dropdown system but modify it for multi-select
-					WindowTable.Dropdown:Setup(MFrame)
-					
-					-- Create a custom callback that handles multi-selection
-					local function multiSelectCallback(selectedValue)
-						local isSelected = table.find(selectedItems, selectedValue) ~= nil
-						
-						if isSelected then
-							-- Remove item
-							local index = table.find(selectedItems, selectedValue)
-							if index then
-								table.remove(selectedItems, index)
-							end
-						else
-							-- Add item
-							table.insert(selectedItems, selectedValue)
-						end
-						
-						updateDisplayText()
-						drop.Callback(selectedItems)
+					-- Remove existing popup if it exists
+					if FunctionMultiDropdown:FindFirstChild("DropdownPopup") then
+						FunctionMultiDropdown:FindFirstChild("DropdownPopup"):Destroy()
 					end
 					
-					-- Show the dropdown with the multi-select callback
-					WindowTable.Dropdown:Open(drop.Data, "Multi-Select", multiSelectCallback)
+					-- Create popup frame
+					local DropdownPopup = Instance.new("Frame")
+					DropdownPopup.Name = "DropdownPopup"
+					DropdownPopup.Parent = FunctionMultiDropdown
+					DropdownPopup.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+					DropdownPopup.BorderSizePixel = 0
+					DropdownPopup.Position = UDim2.new(0, 0, 1, 5)
+					DropdownPopup.Size = UDim2.new(1, 0, 0, 120)
+					DropdownPopup.ZIndex = 30
+					DropdownPopup.ClipsDescendants = true
+					
+					local PopupCorner = Instance.new("UICorner")
+					PopupCorner.CornerRadius = UDim.new(0, 4)
+					PopupCorner.Parent = DropdownPopup
+					
+					local PopupStroke = Instance.new("UIStroke")
+					PopupStroke.Color = Color3.fromRGB(255, 255, 255)
+					PopupStroke.Transparency = 0.8
+					PopupStroke.Parent = DropdownPopup
+					
+					-- Create scrolling frame for items
+					local ScrollingFrame = Instance.new("ScrollingFrame")
+					ScrollingFrame.Parent = DropdownPopup
+					ScrollingFrame.BackgroundTransparency = 1
+					ScrollingFrame.Size = UDim2.new(1, -10, 1, -10)
+					ScrollingFrame.Position = UDim2.new(0, 5, 0, 5)
+					ScrollingFrame.ZIndex = 31
+					ScrollingFrame.ScrollBarThickness = 4
+					ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
+					
+					local ListLayout = Instance.new("UIListLayout")
+					ListLayout.Parent = ScrollingFrame
+					ListLayout.SortOrder = Enum.SortOrder.Name
+					ListLayout.Padding = UDim.new(0, 2)
+					
+					-- Create items
+					for _, item in ipairs(drop.Data) do
+						local ItemButton = Instance.new("TextButton")
+						ItemButton.Name = item
+						ItemButton.Parent = ScrollingFrame
+						ItemButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+						ItemButton.BorderSizePixel = 0
+						ItemButton.Size = UDim2.new(1, 0, 0, 25)
+						ItemButton.ZIndex = 32
+						ItemButton.Font = Enum.Font.Gotham
+						ItemButton.Text = item
+						ItemButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+						ItemButton.TextSize = 12
+						ItemButton.TextXAlignment = Enum.TextXAlignment.Left
+						
+						local ItemCorner = Instance.new("UICorner")
+						ItemCorner.CornerRadius = UDim.new(0, 2)
+						ItemCorner.Parent = ItemButton
+						
+						local ItemPadding = Instance.new("UIPadding")
+						ItemPadding.Parent = ItemButton
+						ItemPadding.PaddingLeft = UDim.new(0, 8)
+						
+						-- Check if item is selected
+						local isSelected = table.find(selectedItems, item) ~= nil
+						if isSelected then
+							ItemButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+						end
+						
+						-- Item click handler
+						ItemButton.MouseButton1Click:Connect(function()
+							local index = table.find(selectedItems, item)
+							if index then
+								-- Remove item
+								table.remove(selectedItems, index)
+								ItemButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+							else
+								-- Add item
+								table.insert(selectedItems, item)
+								ItemButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+							end
+							
+							updateDisplayText()
+							drop.Callback(selectedItems)
+						end)
+					end
+					
+					-- Close dropdown when clicking outside
+					local function closeDropdown()
+						if DropdownPopup then
+							DropdownPopup:Destroy()
+						end
+					end
+					
+					-- Close on escape key
+					local connection
+					connection = game:GetService("UserInputService").InputBegan:Connect(function(input)
+						if input.KeyCode == Enum.KeyCode.Escape then
+							closeDropdown()
+							connection:Disconnect()
+						end
+					end)
+					
+					-- Close on click outside
+					local clickOutsideConnection
+					clickOutsideConnection = game:GetService("UserInputService").InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							if not DropdownPopup:IsDescendantOf(game:GetService("GuiService"):GetGuiInset().Parent) then
+								closeDropdown()
+								clickOutsideConnection:Disconnect()
+							end
+						end
+					end)
 				end
 
 
