@@ -2317,7 +2317,7 @@ function Library.new(config)
 				local Button = Instance.new("TextButton")
 
 				FunctionMultiDropdown.Name = "FunctionMultiDropdown"
-				FunctionMultiDropdown.Parent = self
+				FunctionMultiDropdown.Parent = Section
 				FunctionMultiDropdown.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 				FunctionMultiDropdown.BackgroundTransparency = 0.800
 				FunctionMultiDropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
