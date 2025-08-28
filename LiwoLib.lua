@@ -12,7 +12,7 @@ local Icons = (function()
 
 		local Decode = game:GetService('HttpService'):JSONDecode(Http);
 
-		return Decode['icon'];
+		return Decode['icons'] or Decode['icon'];
 	end);
 
 	if p then return c end;
@@ -1098,7 +1098,7 @@ function Library.new(config)
 		Icon.Size = UDim2.new(0.600000024, 0, 0.600000024, 0)
 		Icon.SizeConstraint = Enum.SizeConstraint.RelativeYY
 		Icon.ZIndex = 6
-		Icon.Image = Icons[cfg.Icon] or cfg.Icon
+					Icon.Image = Library.Icons[cfg.Icon] or cfg.Icon
 		Icon.ImageTransparency = 1
 		Twen:Create(Icon,TweenInfo2,{ImageTransparency = 0.1}):Play();
 
@@ -1367,7 +1367,7 @@ function Library.new(config)
 			Icon.Size = UDim2.new(0.600000024, 0, 0.600000024, 0)
 			Icon.SizeConstraint = Enum.SizeConstraint.RelativeYY
 			Icon.ZIndex = 6
-			Icon.Image = Icons[c_o_n_f_i_g.Icon] or c_o_n_f_i_g.Icon; 
+			Icon.Image = Library.Icons[c_o_n_f_i_g.Icon] or c_o_n_f_i_g.Icon; 
 			Icon.ImageTransparency = 1
 			Twen:Create(Icon,TweenInfo2,{ImageTransparency = 0.1}):Play();
 
