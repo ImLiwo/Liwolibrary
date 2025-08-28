@@ -2287,6 +2287,460 @@ function Library.new(config)
 				};
 			end;
 
+			function SectionTable:NewMultiDropdown(drop)
+				drop = Config(drop,{
+					Title = "Multi Dropdown",
+					Data = {'One','Two','Three','Four'},
+					Default = {},
+					Callback = function(selectedItems)
+
+					end,
+				});
+
+				local FunctionMultiDropdown = Instance.new("Frame")
+				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+				local TextInt = Instance.new("TextLabel")
+				local UIGradient = Instance.new("UIGradient")
+				local UIStroke = Instance.new("UIStroke")
+				local UICorner = Instance.new("UICorner")
+				local MFrame = Instance.new("Frame")
+				local UICorner_2 = Instance.new("UICorner")
+				local UIStroke_2 = Instance.new("UIStroke")
+				local ValueText = Instance.new("TextLabel")
+				local UIGradient_2 = Instance.new("UIGradient")
+				local Button = Instance.new("TextButton")
+
+				FunctionMultiDropdown.Name = "FunctionMultiDropdown"
+				FunctionMultiDropdown.Parent = Section
+				FunctionMultiDropdown.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+				FunctionMultiDropdown.BackgroundTransparency = 0.800
+				FunctionMultiDropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				FunctionMultiDropdown.BorderSizePixel = 0
+				FunctionMultiDropdown.Size = UDim2.new(0.949999988, 0, 0.5, 0)
+				FunctionMultiDropdown.ZIndex = 17
+
+				UIAspectRatioConstraint.Parent = FunctionMultiDropdown
+				UIAspectRatioConstraint.AspectRatio = 5.000
+				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+				TextInt.Name = "TextInt"
+				TextInt.Parent = FunctionMultiDropdown
+				TextInt.AnchorPoint = Vector2.new(0.5, 0.5)
+				TextInt.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TextInt.BackgroundTransparency = 1.000
+				TextInt.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				TextInt.BorderSizePixel = 0
+				TextInt.Position = UDim2.new(0.5, 0, 0.200000003, 0)
+				TextInt.Size = UDim2.new(0.949999988, 0, 0.319999993, 0)
+				TextInt.ZIndex = 18
+				TextInt.Font = Enum.Font.GothamBold
+				TextInt.Text = drop.Title
+				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
+				TextInt.TextScaled = true
+				TextInt.TextSize = 14.000
+				TextInt.TextTransparency = 0.250
+				TextInt.TextWrapped = true
+				TextInt.TextXAlignment = Enum.TextXAlignment.Left
+
+				UIGradient.Rotation = 90
+				UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.84, 0.25), NumberSequenceKeypoint.new(1.00, 1.00)}
+				UIGradient.Parent = TextInt
+
+				UIStroke.Transparency = 0.950
+				UIStroke.Color = Color3.fromRGB(255, 255, 255)
+				UIStroke.Parent = FunctionMultiDropdown
+
+				UICorner.CornerRadius = UDim.new(0, 2)
+				UICorner.Parent = FunctionMultiDropdown
+
+				MFrame.Name = "MFrame"
+				MFrame.Parent = FunctionMultiDropdown
+				MFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+				MFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+				MFrame.BackgroundTransparency = 0.800
+				MFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				MFrame.BorderSizePixel = 0
+				MFrame.ClipsDescendants = true
+				MFrame.Position = UDim2.new(0.5, 0, 0.699999988, 0)
+				MFrame.Size = UDim2.new(0.949999988, 0, 0.375, 0)
+				MFrame.ZIndex = 18
+
+				UICorner_2.CornerRadius = UDim.new(0, 2)
+				UICorner_2.Parent = MFrame
+
+				UIStroke_2.Transparency = 0.975
+				UIStroke_2.Color = Color3.fromRGB(255, 255, 255)
+				UIStroke_2.Parent = MFrame
+
+				ValueText.Name = "ValueText"
+				ValueText.Parent = MFrame
+				ValueText.AnchorPoint = Vector2.new(0.5, 0.5)
+				ValueText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				ValueText.BackgroundTransparency = 1.000
+				ValueText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				ValueText.BorderSizePixel = 0
+				ValueText.Position = UDim2.new(0.5, 0, 0.5, 0)
+				ValueText.Size = UDim2.new(0.899999976, 0, 0.800000012, 0)
+				ValueText.ZIndex = 18
+				ValueText.Font = Enum.Font.GothamBold
+				ValueText.Text = "None Selected"
+				ValueText.TextColor3 = Color3.fromRGB(255, 255, 255)
+				ValueText.TextScaled = true
+				ValueText.TextSize = 14.000
+				ValueText.TextTransparency = 0.500
+				ValueText.TextWrapped = true
+
+				UIGradient_2.Rotation = 90
+				UIGradient_2.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.84, 0.25), NumberSequenceKeypoint.new(1.00, 1.00)}
+				UIGradient_2.Parent = ValueText
+
+				Button.Name = "Button"
+				Button.Parent = FunctionMultiDropdown
+				Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Button.BackgroundTransparency = 1.000
+				Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Button.BorderSizePixel = 0
+				Button.Size = UDim2.new(1, 0, 1, 0)
+				Button.ZIndex = 25
+				Button.Font = Enum.Font.SourceSans
+				Button.Text = ""
+				Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+				Button.TextSize = 14.000
+				Button.TextTransparency = 1.000
+
+				-- Store selected items
+				local selectedItems = drop.Default or {}
+				
+				-- Function to update display text
+				local function updateDisplayText()
+					if #selectedItems == 0 then
+						ValueText.Text = "None Selected"
+					elseif #selectedItems == 1 then
+						ValueText.Text = selectedItems[1]
+					else
+						ValueText.Text = selectedItems[1] .. " +" .. (#selectedItems - 1)
+					end
+				end
+
+				-- Initialize display
+				updateDisplayText()
+
+				-- Function to handle item selection/deselection
+				local function toggleItem(item)
+					local index = table.find(selectedItems, item)
+					if index then
+						-- Remove item
+						table.remove(selectedItems, index)
+					else
+						-- Add item
+						table.insert(selectedItems, item)
+					end
+					updateDisplayText()
+					drop.Callback(selectedItems)
+				end
+
+				-- Create custom multi-select dropdown
+				local function createMultiSelectDropdown()
+					local dropdownFrame = Instance.new("Frame")
+					local UICorner = Instance.new("UICorner")
+					local DropShadow = Instance.new("ImageLabel")
+					local UIStroke = Instance.new("UIStroke")
+					local ScrollingFrame = Instance.new("ScrollingFrame")
+					local UIListLayout = Instance.new("UIListLayout")
+					local Title = Instance.new("TextLabel")
+					local CloseButton = Instance.new("TextButton")
+
+					dropdownFrame.Name = "MultiSelectDropdown"
+					dropdownFrame.Parent = ScreenGui
+					dropdownFrame.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+					dropdownFrame.BackgroundTransparency = 0.100
+					dropdownFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					dropdownFrame.BorderSizePixel = 0
+					dropdownFrame.Position = UDim2.new(0, 0, 0, 0)
+					dropdownFrame.Size = UDim2.new(0, 200, 0, 250)
+					dropdownFrame.ZIndex = 100
+					dropdownFrame.Visible = false
+
+					UICorner.CornerRadius = UDim.new(0, 4)
+					UICorner.Parent = dropdownFrame
+
+					DropShadow.Name = "DropShadow"
+					DropShadow.Parent = dropdownFrame
+					DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+					DropShadow.BackgroundTransparency = 1.000
+					DropShadow.BorderSizePixel = 0
+					DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+					DropShadow.Size = UDim2.new(1, 47, 1, 47)
+					DropShadow.ZIndex = 99
+					DropShadow.Image = "rbxassetid://6015897843"
+					DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+					DropShadow.ImageTransparency = 0.600
+					DropShadow.ScaleType = Enum.ScaleType.Slice
+					DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+					UIStroke.Transparency = 0.900
+					UIStroke.Color = Color3.fromRGB(255, 255, 255)
+					UIStroke.Parent = dropdownFrame
+
+					Title.Name = "Title"
+					Title.Parent = dropdownFrame
+					Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					Title.BackgroundTransparency = 1.000
+					Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Title.BorderSizePixel = 0
+					Title.Position = UDim2.new(0, 0, 0, 0)
+					Title.Size = UDim2.new(1, 0, 0, 30)
+					Title.ZIndex = 101
+					Title.Font = Enum.Font.GothamBold
+					Title.Text = drop.Title
+					Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+					Title.TextScaled = true
+					Title.TextSize = 14.000
+					Title.TextWrapped = true
+
+					CloseButton.Name = "CloseButton"
+					CloseButton.Parent = dropdownFrame
+					CloseButton.AnchorPoint = Vector2.new(1, 0)
+					CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+					CloseButton.BackgroundTransparency = 0.500
+					CloseButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					CloseButton.BorderSizePixel = 0
+					CloseButton.Position = UDim2.new(1, -5, 0, 5)
+					CloseButton.Size = UDim2.new(0, 20, 0, 20)
+					CloseButton.ZIndex = 101
+					CloseButton.Font = Enum.Font.GothamBold
+					CloseButton.Text = "X"
+					CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+					CloseButton.TextScaled = true
+					CloseButton.TextSize = 14.000
+
+					ScrollingFrame.Parent = dropdownFrame
+					ScrollingFrame.Active = true
+					ScrollingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+					ScrollingFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ScrollingFrame.BackgroundTransparency = 1.000
+					ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					ScrollingFrame.BorderSizePixel = 0
+					ScrollingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+					ScrollingFrame.Size = UDim2.new(0.949999988, 0, 0.880000012, 0)
+					ScrollingFrame.ZIndex = 102
+					ScrollingFrame.BottomImage = ""
+					ScrollingFrame.ScrollBarThickness = 6
+					ScrollingFrame.TopImage = ""
+
+					UIListLayout:GetPropertyChangedSignal('AbsoluteContentSize'):Connect(function()
+						ScrollingFrame.CanvasSize = UDim2.fromOffset(0,UIListLayout.AbsoluteContentSize.Y)
+					end)
+
+					UIListLayout.Parent = ScrollingFrame
+					UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+					UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+					UIListLayout.Padding = UDim.new(0, 4)
+
+					-- Create checkboxes for each item
+					for _, item in pairs(drop.Data) do
+						local itemFrame = Instance.new("Frame")
+						local UICorner = Instance.new("UICorner")
+						local Checkbox = Instance.new("Frame")
+						local UICorner_2 = Instance.new("UICorner")
+						local UIStroke = Instance.new("UIStroke")
+						local CheckMark = Instance.new("TextLabel")
+						local ItemText = Instance.new("TextLabel")
+						local SelectButton = Instance.new("TextButton")
+
+						itemFrame.Name = "ItemFrame"
+						itemFrame.Parent = ScrollingFrame
+						itemFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+						itemFrame.BackgroundTransparency = 0.800
+						itemFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						itemFrame.BorderSizePixel = 0
+						itemFrame.Size = UDim2.new(0.949999988, 0, 0, 30)
+						itemFrame.ZIndex = 103
+
+						UICorner.CornerRadius = UDim.new(0, 3)
+						UICorner.Parent = itemFrame
+
+						Checkbox.Name = "Checkbox"
+						Checkbox.Parent = itemFrame
+						Checkbox.AnchorPoint = Vector2.new(0, 0.5)
+						Checkbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						Checkbox.BackgroundTransparency = 0.800
+						Checkbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						Checkbox.BorderSizePixel = 0
+						Checkbox.Position = UDim2.new(0.0250000004, 0, 0.5, 0)
+						Checkbox.Size = UDim2.new(0, 20, 0, 20)
+						Checkbox.ZIndex = 104
+
+						UICorner_2.CornerRadius = UDim.new(0, 2)
+						UICorner_2.Parent = Checkbox
+
+						UIStroke.Transparency = 0.800
+						UIStroke.Color = Color3.fromRGB(255, 255, 255)
+						UIStroke.Parent = Checkbox
+
+						CheckMark.Name = "CheckMark"
+						CheckMark.Parent = Checkbox
+						CheckMark.AnchorPoint = Vector2.new(0.5, 0.5)
+						CheckMark.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						CheckMark.BackgroundTransparency = 1.000
+						CheckMark.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						CheckMark.BorderSizePixel = 0
+						CheckMark.Position = UDim2.new(0.5, 0, 0.5, 0)
+						CheckMark.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
+						CheckMark.ZIndex = 105
+						CheckMark.Font = Enum.Font.GothamBold
+						CheckMark.Text = "✓"
+						CheckMark.TextColor3 = Color3.fromRGB(0, 255, 0)
+						CheckMark.TextScaled = true
+						CheckMark.TextSize = 14.000
+
+						ItemText.Name = "ItemText"
+						ItemText.Parent = itemFrame
+						ItemText.AnchorPoint = Vector2.new(0, 0.5)
+						ItemText.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						ItemText.BackgroundTransparency = 1.000
+						ItemText.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						ItemText.BorderSizePixel = 0
+						ItemText.Position = UDim2.new(0.125, 0, 0.5, 0)
+						ItemText.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
+						ItemText.ZIndex = 104
+						ItemText.Font = Enum.Font.GothamBold
+						ItemText.Text = item
+						ItemText.TextColor3 = Color3.fromRGB(255, 255, 255)
+						ItemText.TextScaled = true
+						ItemText.TextSize = 14.000
+						ItemText.TextWrapped = true
+						ItemText.TextXAlignment = Enum.TextXAlignment.Left
+
+						SelectButton.Name = "SelectButton"
+						SelectButton.Parent = itemFrame
+						SelectButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						SelectButton.BackgroundTransparency = 1.000
+						SelectButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+						SelectButton.BorderSizePixel = 0
+						SelectButton.Size = UDim2.new(1, 0, 1, 0)
+						SelectButton.ZIndex = 105
+						SelectButton.Font = Enum.Font.SourceSans
+						SelectButton.Text = ""
+						SelectButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+						SelectButton.TextSize = 14.000
+
+						-- Set initial state
+						local isSelected = table.find(selectedItems, item) ~= nil
+						CheckMark.Visible = isSelected
+						if isSelected then
+							Checkbox.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+						else
+							Checkbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+						end
+
+						-- Handle selection
+						SelectButton.MouseButton1Click:Connect(function()
+							isSelected = not isSelected
+							CheckMark.Visible = isSelected
+							
+							if isSelected then
+								Checkbox.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+								if not table.find(selectedItems, item) then
+									table.insert(selectedItems, item)
+								end
+							else
+								Checkbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+								local index = table.find(selectedItems, item)
+								if index then
+									table.remove(selectedItems, index)
+								end
+							end
+							
+							updateDisplayText()
+							drop.Callback(selectedItems)
+						end)
+					end
+
+					-- Close button functionality
+					CloseButton.MouseButton1Click:Connect(function()
+						dropdownFrame.Visible = false
+					end)
+
+					return dropdownFrame
+				end
+
+				-- Store dropdown reference
+				local currentDropdown = nil
+
+				-- Button click handler
+				Button.MouseButton1Click:Connect(function()
+					if currentDropdown and currentDropdown.Visible then
+						currentDropdown.Visible = false
+						currentDropdown = nil
+					else
+						if currentDropdown then
+							currentDropdown:Destroy()
+						end
+						
+						currentDropdown = createMultiSelectDropdown()
+						
+						-- Position dropdown near the button
+						local buttonPos = MFrame.AbsolutePosition
+						local buttonSize = MFrame.AbsoluteSize
+						
+						currentDropdown.Position = UDim2.new(0, buttonPos.X, 0, buttonPos.Y + buttonSize.Y + 5)
+						currentDropdown.Size = UDim2.new(0, buttonSize.X, 0, 250)
+						currentDropdown.Visible = true
+					end
+				end)
+
+				-- Close dropdown when clicking outside
+				game:GetService("UserInputService").InputBegan:Connect(function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if currentDropdown and currentDropdown.Visible then
+							local mousePos = game:GetService("UserInputService"):GetMouseLocation()
+							local dropdownPos = currentDropdown.AbsolutePosition
+							local dropdownSize = currentDropdown.AbsoluteSize
+							
+							if mousePos.X < dropdownPos.X or mousePos.X > dropdownPos.X + dropdownSize.X or
+							   mousePos.Y < dropdownPos.Y or mousePos.Y > dropdownPos.Y + dropdownSize.Y then
+								currentDropdown.Visible = false
+							end
+						end
+					end
+				end)
+
+				return {
+					Visible = function(newindx)
+						FunctionMultiDropdown.Visible = newindx
+					end,
+					Value = function(value)
+						selectedItems = value or {}
+						updateDisplayText()
+						drop.Callback(selectedItems)
+					end,
+					GetSelected = function()
+						return selectedItems
+					end,
+					Clear = function()
+						selectedItems = {}
+						updateDisplayText()
+						drop.Callback(selectedItems)
+					end,
+					AddItem = function(item)
+						if not table.find(selectedItems, item) then
+							table.insert(selectedItems, item)
+							updateDisplayText()
+							drop.Callback(selectedItems)
+						end
+					end,
+					RemoveItem = function(item)
+						local index = table.find(selectedItems, item)
+						if index then
+							table.remove(selectedItems, index)
+							updateDisplayText()
+							drop.Callback(selectedItems)
+						end
+					end
+				};
+			end;
+
 			function SectionTable:NewTextbox(conf)
 				conf = Config(conf,{
 					Title = "Textbox",
