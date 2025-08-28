@@ -2445,131 +2445,32 @@ function Library.new(config)
 					drop.Callback(selectedItems)
 				end
 
-				-- Create custom multi-select dropdown popup
+				-- Create custom multi-select dropdown using the existing dropdown system
 				local function createMultiSelectDropdown()
-					-- Create the dropdown popup frame
-					local DropdownPopup = Instance.new("Frame")
-					DropdownPopup.Name = "MultiSelectPopup"
-					DropdownPopup.Parent = game:GetService("CoreGui")
-					DropdownPopup.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-					DropdownPopup.BackgroundTransparency = 0.1
-					DropdownPopup.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					DropdownPopup.BorderSizePixel = 0
-					DropdownPopup.Size = UDim2.new(0, 200, 0, 150)
-					DropdownPopup.Position = UDim2.new(0, Button.AbsolutePosition.X, 0, Button.AbsolutePosition.Y + Button.AbsoluteSize.Y + 5)
-					DropdownPopup.ZIndex = 20
+					-- Use the existing dropdown system but modify it for multi-select
+					WindowTable.Dropdown:Setup(MFrame)
 					
-					local UICorner = Instance.new("UICorner")
-					UICorner.CornerRadius = UDim.new(0, 4)
-					UICorner.Parent = DropdownPopup
-					
-					local UIStroke = Instance.new("UIStroke")
-					UIStroke.Color = Color3.fromRGB(255, 255, 255)
-					UIStroke.Transparency = 0.9
-					UIStroke.Parent = DropdownPopup
-					
-					local ScrollingFrame = Instance.new("ScrollingFrame")
-					ScrollingFrame.Name = "ScrollingFrame"
-					ScrollingFrame.Parent = DropdownPopup
-					ScrollingFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-					ScrollingFrame.BackgroundTransparency = 0.8
-					ScrollingFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					ScrollingFrame.BorderSizePixel = 0
-					ScrollingFrame.Size = UDim2.new(1, -10, 1, -10)
-					ScrollingFrame.Position = UDim2.new(0, 5, 0, 5)
-					ScrollingFrame.ZIndex = 21
-					ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-					ScrollingFrame.ScrollBarThickness = 4
-					
-					local UICorner_2 = Instance.new("UICorner")
-					UICorner_2.CornerRadius = UDim.new(0, 2)
-					UICorner_2.Parent = ScrollingFrame
-					
-					local UIListLayout = Instance.new("UIListLayout")
-					UIListLayout.Parent = ScrollingFrame
-					UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-					UIListLayout.Padding = UDim.new(0, 2)
-					
-					-- Create items
-					for i, item in ipairs(drop.Data) do
-						local ItemButton = Instance.new("TextButton")
-						ItemButton.Name = "Item_" .. i
-						ItemButton.Parent = ScrollingFrame
-						ItemButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-						ItemButton.BackgroundTransparency = 0.5
-						ItemButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-						ItemButton.BorderSizePixel = 0
-						ItemButton.Size = UDim2.new(1, 0, 0, 25)
-						ItemButton.ZIndex = 22
-						ItemButton.Font = Enum.Font.GothamBold
-						ItemButton.Text = tostring(item)
-						ItemButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-						ItemButton.TextScaled = true
-						ItemButton.TextSize = 14
+					-- Create a custom callback that handles multi-selection
+					local function multiSelectCallback(selectedValue)
+						local isSelected = table.find(selectedItems, selectedValue) ~= nil
 						
-						local UICorner_3 = Instance.new("UICorner")
-						UICorner_3.CornerRadius = UDim.new(0, 2)
-						UICorner_3.Parent = ItemButton
-						
-						-- Check if item is selected
-						local isSelected = table.find(selectedItems, item) ~= nil
 						if isSelected then
-							ItemButton.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
-							ItemButton.BackgroundTransparency = 0.3
+							-- Remove item
+							local index = table.find(selectedItems, selectedValue)
+							if index then
+								table.remove(selectedItems, index)
+							end
+						else
+							-- Add item
+							table.insert(selectedItems, selectedValue)
 						end
 						
-						-- Click handler
-						ItemButton.MouseButton1Click:Connect(function()
-							if isSelected then
-								-- Remove item
-								local index = table.find(selectedItems, item)
-								if index then
-									table.remove(selectedItems, index)
-								end
-								ItemButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-								ItemButton.BackgroundTransparency = 0.5
-							else
-								-- Add item
-								table.insert(selectedItems, item)
-								ItemButton.BackgroundColor3 = Color3.fromRGB(0, 100, 255)
-								ItemButton.BackgroundTransparency = 0.3
-							end
-							
-							isSelected = not isSelected
-							updateDisplayText()
-							drop.Callback(selectedItems)
-						end)
+						updateDisplayText()
+						drop.Callback(selectedItems)
 					end
 					
-					-- Update canvas size
-					ScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, UIListLayout.AbsoluteContentSize.Y)
-					
-					-- Close dropdown when clicking outside
-					local function closeDropdown()
-						DropdownPopup:Destroy()
-					end
-					
-					-- Close on escape key
-					local connection
-					connection = game:GetService("UserInputService").InputBegan:Connect(function(input)
-						if input.KeyCode == Enum.KeyCode.Escape then
-							closeDropdown()
-							connection:Disconnect()
-						end
-					end)
-					
-					-- Close on click outside
-					local clickOutsideConnection
-					clickOutsideConnection = game:GetService("UserInputService").InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							local mousePos = game:GetService("UserInputService"):GetMouseLocation()
-							if not (DropdownPopup.AbsolutePosition.X <= mousePos.X and mousePos.X <= DropdownPopup.AbsolutePosition.X + DropdownPopup.AbsoluteSize.X and
-								   DropdownPopup.AbsolutePosition.Y <= mousePos.Y and mousePos.Y <= DropdownPopup.AbsolutePosition.Y + DropdownPopup.AbsoluteSize.Y) then
-								closeDropdown()
-								clickOutsideConnection:Disconnect()
-							end
-						end
-					end)
+					-- Show the dropdown with the multi-select callback
+					WindowTable.Dropdown:Open(drop.Data, "Multi-Select", multiSelectCallback)
 				end
 
 
@@ -3780,7 +3681,5 @@ function Library:Console()
 
 	return overview;
 end;
-
-print('[ OK ]: Fetch Nothing Library')
 
 return table.freeze(Library);
