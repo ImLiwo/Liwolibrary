@@ -917,10 +917,10 @@ function Library.new(config)
 		WindowTable.Dropdown.Open = function(self, args, defauklt, callback, isMultiSelect)
 			Looped = true;
 
-			-- Handle multi-select vs single-select
+			-- Initialize selectedItems for multi-select mode
+			local selectedItems = {}
 			if isMultiSelect then
 				-- For multi-select, defauklt should be a table of selected items
-				local selectedItems = {}
 				-- Create a copy of the selected items to avoid modifying the original
 				for _, item in ipairs(defauklt or {}) do
 					table.insert(selectedItems, item)
