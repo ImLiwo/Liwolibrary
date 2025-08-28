@@ -739,7 +739,8 @@ function Library.new(config)
 		ValueId.TextSize = 14.000
 		ValueId.TextTransparency = 0.800
 		ValueId.TextWrapped = true
-		ValueId.TextXAlignment = Enum.TextXAlignment.Right
+		ValueId.TextXAlignment = Enum.TextXAlignment.Center
+		ValueId.TextYAlignment = Enum.TextYAlignment.Center
 
 		UIAspectRatioConstraint.Parent = ValueId
 		UIAspectRatioConstraint.AspectRatio = 15.000
@@ -929,6 +930,8 @@ function Library.new(config)
 			else
 				-- For single-select, defauklt should be a single value
 				ValueId.Text = tostring(defauklt)
+				-- Initialize selectedItems as empty for single-select to avoid nil errors
+				selectedItems = {}
 			end
 
 			Twen:Create(DropdownFrame,TweenInfo.new(0.3),{
