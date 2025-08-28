@@ -3141,7 +3141,7 @@ Library.Notification = function()
 			icon.Position = UDim2.new(0.5, 0, 0.5, 0)
 			icon.Size = UDim2.new(0.3, 0, 0.3, 0)
 			icon.SizeConstraint = Enum.SizeConstraint.RelativeYY
-			icon.Image = Icons[ctfx.Icon] or ctfx.Icon
+			icon.Image = Library.Icons[ctfx.Icon] or ctfx.Icon
 			icon.ImageTransparency = 1;
 
 			Twen:Create(icon,css_style,{
