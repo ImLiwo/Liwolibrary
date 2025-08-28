@@ -909,11 +909,12 @@ function Library.new(config)
 		local MouseInFrame = false;
 		local MouseInMyFrame = false;
 
-		function WindowTable.Dropdown:Setup(target_frame:Frame)
+		-- Define the dropdown functions inside the task.spawn scope to access local variables
+		WindowTable.Dropdown.Setup = function(self, target_frame)
 			Locked = target_frame
 		end;
 
-		function WindowTable.Dropdown:Open(args,defauklt,callback)
+		WindowTable.Dropdown.Open = function(self, args, defauklt, callback)
 			Looped = true;
 
 			ValueId.Text = tostring(defauklt)
@@ -940,7 +941,6 @@ function Library.new(config)
 			Twen:Create(UIStroke,TweenInfo.new(0.3),{
 				Transparency = 0.9;
 			}):Play()
-
 
 			for i,v in pairs(ScrollingFrame:GetChildren()) do
 				if v ~= Block then
@@ -971,7 +971,7 @@ function Library.new(config)
 			end;
 		end;
 
-		function WindowTable.Dropdown:Close(args)
+		WindowTable.Dropdown.Close = function(self, args)
 			Looped = false;
 			Twen:Create(UIStroke,TweenInfo.new(0.3),{
 				Transparency = 1;
@@ -2451,8 +2451,8 @@ function Library.new(config)
 					WindowTable.Dropdown:Setup(MFrame)
 					
 					-- Clear existing items
-					for i,v in pairs(WindowTable.Dropdown.ScrollingFrame:GetChildren()) do
-						if v ~= WindowTable.Dropdown.Block then
+					for i,v in pairs(ScrollingFrame:GetChildren()) do
+						if v ~= Block then
 							if v:IsA('Frame') then
 								v:Destroy();
 							end;
