@@ -2317,7 +2317,7 @@ function Library.new(config)
 				local Button = Instance.new("TextButton")
 
 				FunctionMultiDropdown.Name = "FunctionMultiDropdown"
-				FunctionMultiDropdown.Parent = Section
+				FunctionMultiDropdown.Parent = self
 				FunctionMultiDropdown.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 				FunctionMultiDropdown.BackgroundTransparency = 0.800
 				FunctionMultiDropdown.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -2450,43 +2450,27 @@ function Library.new(config)
 					-- Use the existing dropdown system but modify it for multi-select
 					WindowTable.Dropdown:Setup(MFrame)
 					
-					-- Clear existing items
-					for i,v in pairs(ScrollingFrame:GetChildren()) do
-						if v ~= Block then
-							if v:IsA('Frame') then
-								v:Destroy();
-							end;
-						end;
-					end;
-					
-					-- Create multi-select items
-					for i,v in pairs(drop.Data) do
-						local butt = GetSelector(tostring(v), table.find(selectedItems, v) ~= nil);
+					-- Create a custom callback that handles multi-selection
+					local function multiSelectCallback(selectedValue)
+						local isSelected = table.find(selectedItems, selectedValue) ~= nil
 						
-						-- Override the click behavior for multi-select
-						butt.button.MouseButton1Click:Connect(function()
-							local isSelected = table.find(selectedItems, v) ~= nil
-							
-							if isSelected then
-								-- Remove item
-								local index = table.find(selectedItems, v)
-								if index then
-									table.remove(selectedItems, index)
-								end
-								butt.effect(false)
-							else
-								-- Add item
-								table.insert(selectedItems, v)
-								butt.effect(true)
+						if isSelected then
+							-- Remove item
+							local index = table.find(selectedItems, selectedValue)
+							if index then
+								table.remove(selectedItems, index)
 							end
-							
-							updateDisplayText()
-							drop.Callback(selectedItems)
-						end)
+						else
+							-- Add item
+							table.insert(selectedItems, selectedValue)
+						end
+						
+						updateDisplayText()
+						drop.Callback(selectedItems)
 					end
 					
-					-- Show the dropdown
-					WindowTable.Dropdown:Open(drop.Data, "Multi-Select", function() end)
+					-- Show the dropdown with the multi-select callback
+					WindowTable.Dropdown:Open(drop.Data, "Multi-Select", multiSelectCallback)
 				end
 
 
