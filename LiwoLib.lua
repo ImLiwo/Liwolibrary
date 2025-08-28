@@ -3067,12 +3067,12 @@ Library.Notification = function()
 	Notification.IgnoreGuiInset = true
 
 	Frame.Parent = Notification
-	Frame.AnchorPoint = Vector2.new(0, 1)
+	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
 	Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Frame.BackgroundTransparency = 1.000
 	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Frame.BorderSizePixel = 0
-	Frame.Position = UDim2.new(0, 10, 1, -10)
+	Frame.Position = UDim2.new(0.151568726, 0, 0.5, 0)
 	Frame.Size = UDim2.new(0.400000006, 0, 0.400000006, 0)
 	Frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
 
