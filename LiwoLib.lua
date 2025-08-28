@@ -4,10 +4,11 @@ local Twen = game:GetService('TweenService');
 local Input = game:GetService('UserInputService');
 local TextServ = game:GetService('TextService');
 local LocalPlayer = game:GetService('Players').LocalPlayer;
-local CoreGui = (gethui and gethui()) or game:FindFirstChild('CoreGui') or LocalPlayer.PlayerGui;
+local gethui = gethui or function() return game:FindFirstChild('CoreGui') or LocalPlayer.PlayerGui end
+local CoreGui = gethui()
 local Icons = (function()
 	local p,c = pcall(function()
-		local Http = game:HttpGetAsync('https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json');
+		local Http = game:HttpGet('https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json');
 
 		local Decode = game:GetService('HttpService'):JSONDecode(Http);
 
@@ -196,8 +197,13 @@ Library['.'] = '1';
 Library['FetchIcon'] = "https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json";
 
 pcall(function()
-	Library['Icons'] = game:GetService('HttpService'):JSONDecode(game:HttpGetAsync(Library.FetchIcon))['icons'];
+	Library['Icons'] = game:GetService('HttpService'):JSONDecode(game:HttpGet(Library.FetchIcon))['icons'];
 end)
+
+-- Fallback to local Icons if the HTTP request fails
+if not Library['Icons'] then
+	Library['Icons'] = Icons
+end
 
 function Library.GradientImage(E : Frame , Color)
 	local GLImage = Instance.new("ImageLabel")
