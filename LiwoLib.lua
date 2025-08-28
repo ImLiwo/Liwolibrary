@@ -2554,7 +2554,13 @@ function Library.new(config)
 					local clickOutsideConnection
 					clickOutsideConnection = game:GetService("UserInputService").InputBegan:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							if not DropdownPopup:IsDescendantOf(game:GetService("GuiService"):GetGuiInset().Parent) then
+							-- Check if click is outside the dropdown popup
+							local mousePos = game:GetService("UserInputService"):GetMouseLocation()
+							local popupPos = DropdownPopup.AbsolutePosition
+							local popupSize = DropdownPopup.AbsoluteSize
+							
+							if mousePos.X < popupPos.X or mousePos.X > popupPos.X + popupSize.X or
+							   mousePos.Y < popupPos.Y or mousePos.Y > popupPos.Y + popupSize.Y then
 								closeDropdown()
 								clickOutsideConnection:Disconnect()
 							end
