@@ -914,10 +914,23 @@ function Library.new(config)
 			Locked = target_frame
 		end;
 
-		WindowTable.Dropdown.Open = function(self, args, defauklt, callback)
+		WindowTable.Dropdown.Open = function(self, args, defauklt, callback, isMultiSelect)
 			Looped = true;
 
-			ValueId.Text = tostring(defauklt)
+			-- Handle multi-select vs single-select
+			if isMultiSelect then
+				-- For multi-select, defauklt should be a table of selected items
+				local selectedItems = {}
+				-- Create a copy of the selected items to avoid modifying the original
+				for _, item in ipairs(defauklt or {}) do
+					table.insert(selectedItems, item)
+				end
+				ValueId.Text = #selectedItems > 0 and table.concat(selectedItems, ", ") or "NONE"
+			else
+				-- For single-select, defauklt should be a single value
+				ValueId.Text = tostring(defauklt)
+			end
+
 			Twen:Create(DropdownFrame,TweenInfo.new(0.3),{
 				BackgroundTransparency = 0.1;
 			}):Play()
@@ -953,18 +966,52 @@ function Library.new(config)
 			local list = {};
 
 			for i,v in pairs(args) do
-				local butt = GetSelector(tostring(v),v == defauklt);
+				local isSelected = false
+				if isMultiSelect then
+					-- Check if item is in selectedItems table
+					isSelected = table.find(selectedItems, v) ~= nil
+				else
+					-- Check if item equals defauklt
+					isSelected = v == defauklt
+				end
+
+				local butt = GetSelector(tostring(v), isSelected);
 
 				butt.button.MouseButton1Click:Connect(function()
-					for i,s in ipairs(list) do
-						if s[1] == v then
-							s[2].effect(true);
+					if isMultiSelect then
+						-- Multi-select behavior: toggle item selection
+						local index = table.find(selectedItems, v)
+						if index then
+							-- Remove item
+							table.remove(selectedItems, index)
+							butt.effect(false)
 						else
-							s[2].effect(false);
+							-- Add item
+							table.insert(selectedItems, v)
+							butt.effect(true)
+						end
+						
+						-- Update display text
+						if #selectedItems > 0 then
+							ValueId.Text = table.concat(selectedItems, ", ")
+						else
+							ValueId.Text = "NONE"
+						end
+						
+						-- Call callback with updated selection
+						callback(selectedItems)
+					else
+						-- Single-select behavior: select only this item
+						for i,s in ipairs(list) do
+							if s[1] == v then
+								s[2].effect(true);
+							else
+								s[2].effect(false);
+							end;
 						end;
-					end;
-					ValueId.Text = tostring(v);
-					callback(v);
+						ValueId.Text = tostring(v);
+						callback(v);
+					end
 				end)
 
 				table.insert(list,{v,butt})
@@ -2389,7 +2436,7 @@ function Library.new(config)
 				ValueText.Size = UDim2.new(0.899999976, 0, 0.800000012, 0)
 				ValueText.ZIndex = 18
 				ValueText.Font = Enum.Font.GothamBold
-				ValueText.Text = "None Selected"
+				ValueText.Text = "NONE"
 				ValueText.TextColor3 = Color3.fromRGB(255, 255, 255)
 				ValueText.TextScaled = true
 				ValueText.TextSize = 14.000
@@ -2420,7 +2467,7 @@ function Library.new(config)
 				-- Function to update display text
 				local function updateDisplayText()
 					if #selectedItems == 0 then
-						ValueText.Text = "None Selected"
+						ValueText.Text = "NONE"
 					elseif #selectedItems == 1 then
 						ValueText.Text = selectedItems[1]
 					else
@@ -2431,148 +2478,19 @@ function Library.new(config)
 				-- Initialize display
 				updateDisplayText()
 
-				-- Function to handle item selection/deselection
-				local function toggleItem(item)
-					local index = table.find(selectedItems, item)
-					if index then
-						-- Remove item
-						table.remove(selectedItems, index)
-					else
-						-- Add item
-						table.insert(selectedItems, item)
-					end
-					updateDisplayText()
-					drop.Callback(selectedItems)
-				end
-
-				-- Create custom multi-select dropdown
-				local function createMultiSelectDropdown()
-					-- Remove existing popup if it exists
-					if FunctionMultiDropdown:FindFirstChild("DropdownPopup") then
-						FunctionMultiDropdown:FindFirstChild("DropdownPopup"):Destroy()
-					end
-					
-					-- Create popup frame
-					local DropdownPopup = Instance.new("Frame")
-					DropdownPopup.Name = "DropdownPopup"
-					DropdownPopup.Parent = FunctionMultiDropdown
-					DropdownPopup.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-					DropdownPopup.BorderSizePixel = 0
-					DropdownPopup.Position = UDim2.new(0, 0, 1, 5)
-					DropdownPopup.Size = UDim2.new(1, 0, 0, 120)
-					DropdownPopup.ZIndex = 30
-					DropdownPopup.ClipsDescendants = true
-					
-					local PopupCorner = Instance.new("UICorner")
-					PopupCorner.CornerRadius = UDim.new(0, 4)
-					PopupCorner.Parent = DropdownPopup
-					
-					local PopupStroke = Instance.new("UIStroke")
-					PopupStroke.Color = Color3.fromRGB(255, 255, 255)
-					PopupStroke.Transparency = 0.8
-					PopupStroke.Parent = DropdownPopup
-					
-					-- Create scrolling frame for items
-					local ScrollingFrame = Instance.new("ScrollingFrame")
-					ScrollingFrame.Parent = DropdownPopup
-					ScrollingFrame.BackgroundTransparency = 1
-					ScrollingFrame.Size = UDim2.new(1, -10, 1, -10)
-					ScrollingFrame.Position = UDim2.new(0, 5, 0, 5)
-					ScrollingFrame.ZIndex = 31
-					ScrollingFrame.ScrollBarThickness = 4
-					ScrollingFrame.ScrollBarImageColor3 = Color3.fromRGB(255, 255, 255)
-					
-					local ListLayout = Instance.new("UIListLayout")
-					ListLayout.Parent = ScrollingFrame
-					ListLayout.SortOrder = Enum.SortOrder.Name
-					ListLayout.Padding = UDim.new(0, 2)
-					
-					-- Create items
-					for _, item in ipairs(drop.Data) do
-						local ItemButton = Instance.new("TextButton")
-						ItemButton.Name = item
-						ItemButton.Parent = ScrollingFrame
-						ItemButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-						ItemButton.BorderSizePixel = 0
-						ItemButton.Size = UDim2.new(1, 0, 0, 25)
-						ItemButton.ZIndex = 32
-						ItemButton.Font = Enum.Font.Gotham
-						ItemButton.Text = item
-						ItemButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-						ItemButton.TextSize = 12
-						ItemButton.TextXAlignment = Enum.TextXAlignment.Left
-						
-						local ItemCorner = Instance.new("UICorner")
-						ItemCorner.CornerRadius = UDim.new(0, 2)
-						ItemCorner.Parent = ItemButton
-						
-						local ItemPadding = Instance.new("UIPadding")
-						ItemPadding.Parent = ItemButton
-						ItemPadding.PaddingLeft = UDim.new(0, 8)
-						
-						-- Check if item is selected
-						local isSelected = table.find(selectedItems, item) ~= nil
-						if isSelected then
-							ItemButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-						end
-						
-						-- Item click handler
-						ItemButton.MouseButton1Click:Connect(function()
-							local index = table.find(selectedItems, item)
-							if index then
-								-- Remove item
-								table.remove(selectedItems, index)
-								ItemButton.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-							else
-								-- Add item
-								table.insert(selectedItems, item)
-								ItemButton.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
-							end
-							
-							updateDisplayText()
-							drop.Callback(selectedItems)
-						end)
-					end
-					
-					-- Close dropdown when clicking outside
-					local function closeDropdown()
-						if DropdownPopup then
-							DropdownPopup:Destroy()
-						end
-					end
-					
-					-- Close on escape key
-					local connection
-					connection = game:GetService("UserInputService").InputBegan:Connect(function(input)
-						if input.KeyCode == Enum.KeyCode.Escape then
-							closeDropdown()
-							connection:Disconnect()
-						end
-					end)
-					
-					-- Close on click outside
-					local clickOutsideConnection
-					clickOutsideConnection = game:GetService("UserInputService").InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							-- Check if click is outside the dropdown popup
-							local mousePos = game:GetService("UserInputService"):GetMouseLocation()
-							local popupPos = DropdownPopup.AbsolutePosition
-							local popupSize = DropdownPopup.AbsoluteSize
-							
-							if mousePos.X < popupPos.X or mousePos.X > popupPos.X + popupSize.X or
-							   mousePos.Y < popupPos.Y or mousePos.Y > popupPos.Y + popupSize.Y then
-								closeDropdown()
-								clickOutsideConnection:Disconnect()
-							end
-						end
-					end)
-				end
-
-
 
 				-- Button click handler
 				Button.MouseButton1Click:Connect(function()
-					createMultiSelectDropdown()
+					WindowTable.Dropdown:Setup(MFrame)
+					WindowTable.Dropdown:Open(drop.Data, selectedItems, function(updatedSelection)
+						-- Update the local selectedItems table
+						selectedItems = {}
+						for _, item in ipairs(updatedSelection or {}) do
+							table.insert(selectedItems, item)
+						end
+						updateDisplayText()
+						drop.Callback(selectedItems)
+					end, true)
 				end)
 
 				return {
