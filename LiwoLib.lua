@@ -2448,7 +2448,7 @@ function Library.new(config)
 				-- Create custom multi-select dropdown using the existing dropdown system
 				local function createMultiSelectDropdown()
 					-- Use the existing dropdown system but modify it for multi-select
-					WindowTable.Dropdown:Setup(MFrame)
+					WindowTable.Dropdown.Setup(WindowTable.Dropdown, MFrame)
 					
 					-- Create a custom callback that handles multi-selection
 					local function multiSelectCallback(selectedValue)
@@ -2470,7 +2470,7 @@ function Library.new(config)
 					end
 					
 					-- Show the dropdown with the multi-select callback
-					WindowTable.Dropdown:Open(drop.Data, "Multi-Select", multiSelectCallback)
+					WindowTable.Dropdown.Open(WindowTable.Dropdown, drop.Data, "Multi-Select", multiSelectCallback)
 				end
 
 
