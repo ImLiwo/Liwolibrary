@@ -739,8 +739,7 @@ function Library.new(config)
 		ValueId.TextSize = 14.000
 		ValueId.TextTransparency = 0.800
 		ValueId.TextWrapped = true
-		ValueId.TextXAlignment = Enum.TextXAlignment.Center
-		ValueId.TextYAlignment = Enum.TextYAlignment.Center
+		ValueId.TextXAlignment = Enum.TextXAlignment.Right
 
 		UIAspectRatioConstraint.Parent = ValueId
 		UIAspectRatioConstraint.AspectRatio = 15.000
@@ -930,8 +929,6 @@ function Library.new(config)
 			else
 				-- For single-select, defauklt should be a single value
 				ValueId.Text = tostring(defauklt)
-				-- Initialize selectedItems as empty for single-select to avoid nil errors
-				selectedItems = {}
 			end
 
 			Twen:Create(DropdownFrame,TweenInfo.new(0.3),{
@@ -3073,19 +3070,19 @@ Library.Notification = function()
 	Notification.IgnoreGuiInset = true
 
 	Frame.Parent = Notification
-	Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+	Frame.AnchorPoint = Vector2.new(0, 1)
 	Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Frame.BackgroundTransparency = 1.000
 	Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	Frame.BorderSizePixel = 0
-	Frame.Position = UDim2.new(0.151568726, 0, 0.5, 0)
+	Frame.Position = UDim2.new(0.02, 0, 0.98, 0)
 	Frame.Size = UDim2.new(0.400000006, 0, 0.400000006, 0)
 	Frame.SizeConstraint = Enum.SizeConstraint.RelativeYY
 
 	UIListLayout.Parent = Frame
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-	UIListLayout.Padding = UDim.new(0,2);
+	UIListLayout.Padding = UDim.new(0,2)
 
 	return {
 		new = function(ctfx)
