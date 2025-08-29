@@ -3082,7 +3082,7 @@ Library.Notification = function()
 	UIListLayout.Parent = Frame
 	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 	UIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-	UIListLayout.Padding = UDim.new(0,2)
+	UIListLayout.Padding = UDim.new(0,2);
 
 	return {
 		new = function(ctfx)
