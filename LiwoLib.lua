@@ -1535,7 +1535,7 @@ function Library.new(config)
 				TextInt.Text = toggle.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -1676,7 +1676,7 @@ function Library.new(config)
 				TextInt.Text = lrm
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 1
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -1766,7 +1766,7 @@ function Library.new(config)
 				TextInt.Text = cfg.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextWrapped = true
 				TextInt.TextTransparency = 0.25;
 
@@ -1873,7 +1873,7 @@ function Library.new(config)
 				TextInt.Text = ctfx.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -1940,7 +1940,27 @@ function Library.new(config)
 
 				local IsWIP = false;
 				local function UpdateUI(new)
-					Bindkey.Text = (typeof(new) == 'string' and new) or new.Name;
+					local displayText = ""
+					
+					-- Handle different input types
+					if typeof(new) == 'string' then
+						displayText = new
+					elseif new.UserInputType then
+						-- Mouse button names
+						if new.UserInputType == Enum.UserInputType.MouseButton1 then
+							displayText = "LMB"
+						elseif new.UserInputType == Enum.UserInputType.MouseButton2 then
+							displayText = "RMB"
+						elseif new.UserInputType == Enum.UserInputType.MouseButton3 then
+							displayText = "MMB"
+						else
+							displayText = new.UserInputType.Name
+						end
+					else
+						displayText = new.Name
+					end
+					
+					Bindkey.Text = displayText
 
 					local size = TextServ:GetTextSize(Bindkey.Text,Bindkey.TextSize,Bindkey.Font,Vector2.new(math.huge,math.huge));
 
@@ -1956,17 +1976,19 @@ function Library.new(config)
 
 					IsWIP = true;
 
-
 					Twen:Create(TextInt,TweenInfo.new(0.1),{
 						TextTransparency = 0
 					}):Play();
 
 					local Signal = Input.InputBegan:Connect(function(key)
-						if key.KeyCode then
-							if key.KeyCode ~= Enum.KeyCode.Unknown then
-								BindEvent:Fire(key.KeyCode);
-							end;
-						end;
+						-- Support both keyboard keys and mouse buttons
+						if key.KeyCode and key.KeyCode ~= Enum.KeyCode.Unknown then
+							BindEvent:Fire(key.KeyCode);
+						elseif key.UserInputType and (key.UserInputType == Enum.UserInputType.MouseButton1 or 
+								key.UserInputType == Enum.UserInputType.MouseButton2 or 
+								key.UserInputType == Enum.UserInputType.MouseButton3) then
+							BindEvent:Fire(key.UserInputType);
+						end
 					end)
 
 					UpdateUI('...')
@@ -1979,8 +2001,6 @@ function Library.new(config)
 
 					IsWIP = false;
 					ctfx.Callback(Bind);
-
-
 				end)
 
 				return {
@@ -2048,7 +2068,7 @@ function Library.new(config)
 				TextInt.Text = slider.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2219,7 +2239,7 @@ function Library.new(config)
 				TextInt.Text = drop.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2390,7 +2410,7 @@ function Library.new(config)
 				TextInt.Text = drop.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2579,7 +2599,7 @@ function Library.new(config)
 				TextInt.Text = conf.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 18.000
+				TextInt.TextSize = 14.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
