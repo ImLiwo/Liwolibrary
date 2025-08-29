@@ -1535,7 +1535,7 @@ function Library.new(config)
 				TextInt.Text = toggle.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -1676,7 +1676,7 @@ function Library.new(config)
 				TextInt.Text = lrm
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 1
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -1766,7 +1766,7 @@ function Library.new(config)
 				TextInt.Text = cfg.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextWrapped = true
 				TextInt.TextTransparency = 0.25;
 
@@ -1873,7 +1873,7 @@ function Library.new(config)
 				TextInt.Text = ctfx.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2048,7 +2048,7 @@ function Library.new(config)
 				TextInt.Text = slider.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2219,7 +2219,7 @@ function Library.new(config)
 				TextInt.Text = drop.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2390,7 +2390,7 @@ function Library.new(config)
 				TextInt.Text = drop.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
@@ -2579,7 +2579,7 @@ function Library.new(config)
 				TextInt.Text = conf.Title
 				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
+				TextInt.TextSize = 18.000
 				TextInt.TextTransparency = 0.250
 				TextInt.TextWrapped = true
 				TextInt.TextXAlignment = Enum.TextXAlignment.Left
