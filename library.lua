@@ -1,3 +1,5 @@
+-- ICON: https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json -
+
 local Twen = game:GetService('TweenService');
 local Input = game:GetService('UserInputService');
 local TextServ = game:GetService('TextService');
@@ -4230,6 +4232,161 @@ end
 function Library.ESPPositioning.IsOnScreen(camera, worldPosition)
 	local screenPos, onScreen = camera:WorldToViewportPoint(worldPosition)
 	return onScreen, screenPos
+end
+
+-- Color Picker System
+Library.ColorPicker = {}
+
+-- Function to create a color picker popup
+function Library.ColorPicker.CreatePopup(title, currentColor, onColorChange, parent)
+	-- Remove existing popup if any
+	local existingPopup = game.CoreGui:FindFirstChild("ColorPickerPopup")
+	if existingPopup then
+		existingPopup:Destroy()
+	end
+	
+	-- Create popup frame
+	local popup = Instance.new("Frame")
+	popup.Name = "ColorPickerPopup"
+	popup.Parent = game.CoreGui
+	popup.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	popup.BorderSizePixel = 0
+	popup.Position = UDim2.new(0.8, 0, 0.3, 0) -- Position on the right side
+	popup.Size = UDim2.new(0, 200, 0, 280) -- Smaller size
+	popup.ZIndex = 100
+	
+	-- Round corners
+	local corner = Instance.new("UICorner")
+	corner.CornerRadius = UDim.new(0, 8)
+	corner.Parent = popup
+	
+	-- Border
+	local border = Instance.new("UIStroke")
+	border.Color = Color3.fromRGB(255, 255, 255)
+	border.Transparency = 0.8
+	border.Parent = popup
+	
+	-- Title
+	local titleLabel = Instance.new("TextLabel")
+	titleLabel.Parent = popup
+	titleLabel.BackgroundTransparency = 1
+	titleLabel.Position = UDim2.new(0, 10, 0, 10)
+	titleLabel.Size = UDim2.new(1, -20, 0, 25)
+	titleLabel.Font = Enum.Font.GothamBold
+	titleLabel.Text = title
+	titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	titleLabel.TextSize = 16
+	titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+	titleLabel.ZIndex = 101
+	
+	-- Color preview
+	local colorPreview = Instance.new("Frame")
+	colorPreview.Parent = popup
+	colorPreview.BackgroundColor3 = currentColor
+	colorPreview.Position = UDim2.new(0.1, 0, 0.15, 0)
+	colorPreview.Size = UDim2.new(0.8, 0, 0.15, 0)
+	colorPreview.ZIndex = 101
+	
+	local previewCorner = Instance.new("UICorner")
+	previewCorner.CornerRadius = UDim.new(0, 4)
+	previewCorner.Parent = colorPreview
+	
+	-- RGB Sliders
+	local rSlider = Instance.new("TextLabel")
+	rSlider.Parent = popup
+	rSlider.BackgroundTransparency = 1
+	rSlider.Position = UDim2.new(0, 10, 0.35, 0)
+	rSlider.Size = UDim2.new(0.4, 0, 0, 20)
+	rSlider.Font = Enum.Font.Gotham
+	rSlider.Text = "R: " .. math.floor(currentColor.R * 255)
+	rSlider.TextColor3 = Color3.fromRGB(255, 100, 100)
+	rSlider.TextSize = 14
+	rSlider.TextXAlignment = Enum.TextXAlignment.Left
+	rSlider.ZIndex = 101
+	
+	local gSlider = Instance.new("TextLabel")
+	gSlider.Parent = popup
+	gSlider.BackgroundTransparency = 1
+	gSlider.Position = UDim2.new(0.5, 0, 0.35, 0)
+	gSlider.Size = UDim2.new(0.4, 0, 0, 20)
+	gSlider.Font = Enum.Font.Gotham
+	gSlider.Text = "G: " .. math.floor(currentColor.G * 255)
+	gSlider.TextColor3 = Color3.fromRGB(100, 255, 100)
+	gSlider.TextSize = 14
+	gSlider.TextXAlignment = Enum.TextXAlignment.Left
+	gSlider.ZIndex = 101
+	
+	local bSlider = Instance.new("TextLabel")
+	bSlider.Parent = popup
+	bSlider.BackgroundTransparency = 1
+	bSlider.Position = UDim2.new(0, 10, 0.45, 0)
+	bSlider.Size = UDim2.new(0.4, 0, 0, 20)
+	bSlider.Font = Enum.Font.Gotham
+	bSlider.Text = "B: " .. math.floor(currentColor.B * 255)
+	bSlider.TextColor3 = Color3.fromRGB(100, 100, 255)
+	bSlider.TextSize = 14
+	bSlider.TextXAlignment = Enum.TextXAlignment.Left
+	bSlider.ZIndex = 101
+	
+	-- Quick color buttons
+	local quickColors = {
+		{name = "Red", color = Color3.fromRGB(255, 0, 0)},
+		{name = "Green", color = Color3.fromRGB(0, 255, 0)},
+		{name = "Blue", color = Color3.fromRGB(0, 0, 255)},
+		{name = "White", color = Color3.fromRGB(255, 255, 255)},
+		{name = "Yellow", color = Color3.fromRGB(255, 255, 0)},
+		{name = "Purple", color = Color3.fromRGB(255, 0, 255)},
+		{name = "Cyan", color = Color3.fromRGB(0, 255, 255)},
+		{name = "Orange", color = Color3.fromRGB(255, 165, 0)}
+	}
+	
+	local buttonY = 0.55
+	for i, colorData in ipairs(quickColors) do
+		local button = Instance.new("TextButton")
+		button.Parent = popup
+		button.BackgroundColor3 = colorData.color
+		button.Position = UDim2.new(0.05 + ((i-1) % 4) * 0.225, 0, buttonY + math.floor((i-1) / 4) * 0.08, 0)
+		button.Size = UDim2.new(0, 40, 0, 25)
+		button.Font = Enum.Font.GothamBold
+		button.Text = colorData.name
+		button.TextColor3 = Color3.fromRGB(255, 255, 255)
+		button.TextSize = 10
+		button.ZIndex = 101
+		
+		local buttonCorner = Instance.new("UICorner")
+		buttonCorner.CornerRadius = UDim.new(0, 4)
+		buttonCorner.Parent = button
+		
+		button.MouseButton1Click:Connect(function()
+			onColorChange(colorData.color)
+			colorPreview.BackgroundColor3 = colorData.color
+			rSlider.Text = "R: " .. math.floor(colorData.color.R * 255)
+			gSlider.Text = "G: " .. math.floor(colorData.color.G * 255)
+			bSlider.Text = "B: " .. math.floor(colorData.color.B * 255)
+		end)
+	end
+	
+	-- Close button
+	local closeButton = Instance.new("TextButton")
+	closeButton.Parent = popup
+	closeButton.BackgroundColor3 = Color3.fromRGB(255, 100, 100)
+	closeButton.Position = UDim2.new(0.1, 0, 0.9, 0)
+	closeButton.Size = UDim2.new(0.8, 0, 0, 25)
+	closeButton.Font = Enum.Font.GothamBold
+	closeButton.Text = "Close"
+	closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	closeButton.TextSize = 14
+	closeButton.ZIndex = 101
+	
+	local closeCorner = Instance.new("UICorner")
+	closeCorner.CornerRadius = UDim.new(0, 4)
+	closeCorner.Parent = closeButton
+	
+	closeButton.MouseButton1Click:Connect(function()
+		popup:Destroy()
+	end)
+	
+	return popup
 end
 
 return table.freeze(Library);
