@@ -1,5 +1,3 @@
--- ICON: https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json -
-
 local Twen = game:GetService('TweenService');
 local Input = game:GetService('UserInputService');
 local TextServ = game:GetService('TextService');
@@ -4176,5 +4174,62 @@ function Library:Console()
 
 	return overview;
 end;
+
+-- ESP Positioning System
+Library.ESPPositioning = {}
+
+-- Function to calculate optimal ESP positions
+function Library.ESPPositioning.CalculatePositions(player, camera, enabledFeatures)
+	if not player or not player.Character then return nil end
+	
+	local character = player.Character
+	local head = character:FindFirstChild("Head")
+	local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+	
+	if not head or not humanoidRootPart then return nil end
+	
+	local headPos, onScreen = camera:WorldToViewportPoint(head.Position)
+	local rootPos = camera:WorldToViewportPoint(humanoidRootPart.Position)
+	
+	if not onScreen then return nil end
+	
+	local positions = {}
+	
+	-- Name position (above head)
+	if enabledFeatures.Name then
+		positions.Name = Vector2.new(headPos.X, headPos.Y - 50)
+	end
+	
+	-- Distance position (below player)
+	if enabledFeatures.Distance then
+		positions.Distance = Vector2.new(rootPos.X, rootPos.Y + 30)
+	end
+	
+	-- Weapon position (below distance)
+	if enabledFeatures.Weapon then
+		positions.Weapon = Vector2.new(rootPos.X, rootPos.Y + 50)
+	end
+	
+	return positions
+end
+
+-- Function to check if player is holding a tool
+function Library.ESPPositioning.HasTool(player)
+	if not player or not player.Character then return false, nil end
+	
+	local tool = player.Character:FindFirstChildOfClass("Tool")
+	return tool ~= nil, tool and tool.Name or nil
+end
+
+-- Function to calculate distance between two positions
+function Library.ESPPositioning.CalculateDistance(pos1, pos2)
+	return math.floor((pos1 - pos2).Magnitude)
+end
+
+-- Function to check if position is on screen
+function Library.ESPPositioning.IsOnScreen(camera, worldPosition)
+	local screenPos, onScreen = camera:WorldToViewportPoint(worldPosition)
+	return onScreen, screenPos
+end
 
 return table.freeze(Library);
