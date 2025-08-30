@@ -1,5 +1,3 @@
--- ICON: https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json -
-
 local Twen = game:GetService('TweenService');
 local Input = game:GetService('UserInputService');
 local TextServ = game:GetService('TextService');
@@ -4525,6 +4523,61 @@ function Library.ColorPicker.CreatePopup(title, currentColor, onColorChange)
             dragging = false
         end
     end)
+end
+
+-- ESP Positioning Functions
+Library.ESPPositioning = {}
+
+function Library.ESPPositioning.CalculatePositions(player, camera, enabledFeatures)
+	if not player or not player.Character or not player.Character:FindFirstChild("Head") then
+		return nil
+	end
+	
+	local head = player.Character.Head
+	local headPosition = head.Position
+	local screenPos, onScreen = camera:WorldToViewportPoint(headPosition)
+	
+	if not onScreen then
+		return nil
+	end
+	
+	local positions = {}
+	
+	-- Calculate name position (above player)
+	if enabledFeatures.Name then
+		positions.Name = Vector2.new(screenPos.X, screenPos.Y - 40)
+	end
+	
+	-- Calculate distance position (below player)
+	if enabledFeatures.Distance then
+		positions.Distance = Vector2.new(screenPos.X, screenPos.Y + 20)
+	end
+	
+	-- Calculate weapon position (below distance)
+	if enabledFeatures.Weapon then
+		positions.Weapon = Vector2.new(screenPos.X, screenPos.Y + 40)
+	end
+	
+	return positions
+end
+
+function Library.ESPPositioning.HasTool(player)
+	if not player or not player.Character then
+		return false, ""
+	end
+	
+	local tool = player.Character:FindFirstChildOfClass("Tool")
+	return tool ~= nil, tool and tool.Name or ""
+end
+
+function Library.ESPPositioning.CalculateDistance(pos1, pos2)
+	local distance = (pos1 - pos2).Magnitude
+	return math.floor(distance)
+end
+
+function Library.ESPPositioning.IsOnScreen(camera, worldPosition)
+	local screenPos, onScreen = camera:WorldToViewportPoint(worldPosition)
+	return onScreen, Vector2.new(screenPos.X, screenPos.Y)
 end
 
 return table.freeze(Library);
