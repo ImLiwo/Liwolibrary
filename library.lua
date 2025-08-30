@@ -4389,4 +4389,142 @@ function Library.ColorPicker.CreatePopup(title, currentColor, onColorChange, par
 	return popup
 end
 
+-- Color Picker Functions
+Library.ColorPicker = {}
+
+function Library.ColorPicker.CreatePopup(title, currentColor, onColorChange)
+    local ScreenGui = Instance.new("ScreenGui")
+    ScreenGui.Parent = game:GetService("CoreGui")
+    
+    local PopupFrame = Instance.new("Frame")
+    PopupFrame.Size = UDim2.new(0, 200, 0, 150)
+    PopupFrame.Position = UDim2.new(0, 100, 0, 100)
+    PopupFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    PopupFrame.BorderSizePixel = 0
+    PopupFrame.Parent = ScreenGui
+    
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.Parent = PopupFrame
+    
+    local Title = Instance.new("TextLabel")
+    Title.Size = UDim2.new(1, 0, 0, 25)
+    Title.Position = UDim2.new(0, 0, 0, 0)
+    Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    Title.BorderSizePixel = 0
+    Title.Text = title
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.TextScaled = true
+    Title.Font = Enum.Font.SourceSansBold
+    Title.Parent = PopupFrame
+    
+    local UICorner2 = Instance.new("UICorner")
+    UICorner2.CornerRadius = UDim.new(0, 8)
+    UICorner2.Parent = Title
+    
+    local ColorPreview = Instance.new("Frame")
+    ColorPreview.Size = UDim2.new(0, 30, 0, 30)
+    ColorPreview.Position = UDim2.new(0, 10, 0, 35)
+    ColorPreview.BackgroundColor3 = currentColor
+    ColorPreview.BorderSizePixel = 0
+    ColorPreview.Parent = PopupFrame
+    
+    local UICorner3 = Instance.new("UICorner")
+    UICorner3.CornerRadius = UDim.new(0, 4)
+    UICorner3.Parent = ColorPreview
+    
+    local RGBLabel = Instance.new("TextLabel")
+    RGBLabel.Size = UDim2.new(1, -50, 0, 20)
+    RGBLabel.Position = UDim2.new(0, 50, 0, 35)
+    RGBLabel.BackgroundTransparency = 1
+    RGBLabel.Text = string.format("R: %d G: %d B: %d", 
+        math.floor(currentColor.R * 255),
+        math.floor(currentColor.G * 255),
+        math.floor(currentColor.B * 255))
+    RGBLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    RGBLabel.TextScaled = true
+    RGBLabel.Font = Enum.Font.SourceSans
+    RGBLabel.Parent = PopupFrame
+    
+    -- Quick color presets
+    local colors = {
+        Color3.fromRGB(255, 0, 0),   -- Red
+        Color3.fromRGB(0, 255, 0),   -- Green
+        Color3.fromRGB(0, 0, 255),   -- Blue
+        Color3.fromRGB(255, 255, 0), -- Yellow
+        Color3.fromRGB(255, 0, 255), -- Magenta
+        Color3.fromRGB(0, 255, 255), -- Cyan
+        Color3.fromRGB(255, 255, 255), -- White
+        Color3.fromRGB(0, 0, 0)      -- Black
+    }
+    
+    for i, color in pairs(colors) do
+        local ColorButton = Instance.new("TextButton")
+        ColorButton.Size = UDim2.new(0, 20, 0, 20)
+        ColorButton.Position = UDim2.new(0, 10 + ((i-1) % 4) * 25, 0, 70 + math.floor((i-1) / 4) * 25)
+        ColorButton.BackgroundColor3 = color
+        ColorButton.BorderSizePixel = 0
+        ColorButton.Text = ""
+        ColorButton.Parent = PopupFrame
+        
+        local UICorner4 = Instance.new("UICorner")
+        UICorner4.CornerRadius = UDim.new(0, 4)
+        UICorner4.Parent = ColorButton
+        
+        ColorButton.MouseButton1Click:Connect(function()
+            onColorChange(color)
+            ColorPreview.BackgroundColor3 = color
+            RGBLabel.Text = string.format("R: %d G: %d B: %d", 
+                math.floor(color.R * 255),
+                math.floor(color.G * 255),
+                math.floor(color.B * 255))
+        end)
+    end
+    
+    local CloseButton = Instance.new("TextButton")
+    CloseButton.Size = UDim2.new(0, 60, 0, 25)
+    CloseButton.Position = UDim2.new(0.5, -30, 1, -35)
+    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    CloseButton.BorderSizePixel = 0
+    CloseButton.Text = "Close"
+    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    CloseButton.TextScaled = true
+    CloseButton.Font = Enum.Font.SourceSans
+    CloseButton.Parent = PopupFrame
+    
+    local UICorner5 = Instance.new("UICorner")
+    UICorner5.CornerRadius = UDim.new(0, 4)
+    UICorner5.Parent = CloseButton
+    
+    CloseButton.MouseButton1Click:Connect(function()
+        ScreenGui:Destroy()
+    end)
+    
+    -- Make popup draggable
+    local dragging = false
+    local dragStart = nil
+    local startPos = nil
+    
+    Title.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            dragStart = input.Position
+            startPos = PopupFrame.Position
+        end
+    end)
+    
+    game:GetService("UserInputService").InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
+            local delta = input.Position - dragStart
+            PopupFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    
+    game:GetService("UserInputService").InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
+end
+
 return table.freeze(Library);
