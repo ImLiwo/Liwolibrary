@@ -2754,7 +2754,7 @@ function Library.new(config)
 				})
 
 				-- Small icon display (like AirHub V2)
-				local icon = Instance.new("Frame")
+				local icon = Instance.new("TextButton")
 				icon.Name = "ColorIcon"
 				icon.Parent = Section
 				icon.BackgroundColor3 = colorConfig.Default
@@ -2763,6 +2763,8 @@ function Library.new(config)
 				icon.Size = UDim2.new(0, 18, 0, 10)
 				icon.Position = UDim2.new(1, -18, 0, 2)
 				icon.ZIndex = 8
+				icon.Text = ""
+				icon.TextTransparency = 1
 
 				local UICorner_icon = Instance.new("UICorner")
 				UICorner_icon.CornerRadius = UDim.new(0, 2)
@@ -2811,10 +2813,8 @@ function Library.new(config)
 				end
 
 				-- Click to toggle window
-				icon.InputBegan:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						window.Visible = not window.Visible
-					end
+				icon.MouseButton1Click:Connect(function()
+					window.Visible = not window.Visible
 				end)
 
 				-- Initialize
