@@ -20,6 +20,56 @@ local Icons = (function()
 	return nil;
 end)() or {};
 
+-- Key mapping table for keybind display
+local keys = {
+	[Enum.KeyCode.LeftShift] = "L-SHIFT",
+	[Enum.KeyCode.RightShift] = "R-SHIFT",
+	[Enum.KeyCode.LeftControl] = "L-CTRL",
+	[Enum.KeyCode.RightControl] = "R-CTRL",
+	[Enum.KeyCode.LeftAlt] = "L-ALT",
+	[Enum.KeyCode.RightAlt] = "R-ALT",
+	[Enum.KeyCode.CapsLock] = "CAPSLOCK",
+	[Enum.KeyCode.One] = "1",
+	[Enum.KeyCode.Two] = "2",
+	[Enum.KeyCode.Three] = "3",
+	[Enum.KeyCode.Four] = "4",
+	[Enum.KeyCode.Five] = "5",
+	[Enum.KeyCode.Six] = "6",
+	[Enum.KeyCode.Seven] = "7",
+	[Enum.KeyCode.Eight] = "8",
+	[Enum.KeyCode.Nine] = "9",
+	[Enum.KeyCode.Zero] = "0",
+	[Enum.KeyCode.KeypadOne] = "NUM-1",
+	[Enum.KeyCode.KeypadTwo] = "NUM-2",
+	[Enum.KeyCode.KeypadThree] = "NUM-3",
+	[Enum.KeyCode.KeypadFour] = "NUM-4",
+	[Enum.KeyCode.KeypadFive] = "NUM-5",
+	[Enum.KeyCode.KeypadSix] = "NUM-6",
+	[Enum.KeyCode.KeypadSeven] = "NUM-7",
+	[Enum.KeyCode.KeypadEight] = "NUM-8",
+	[Enum.KeyCode.KeypadNine] = "NUM-9",
+	[Enum.KeyCode.KeypadZero] = "NUM-0",
+	[Enum.KeyCode.Minus] = "-",
+	[Enum.KeyCode.Equals] = "=",
+	[Enum.KeyCode.Tilde] = "~",
+	[Enum.KeyCode.LeftBracket] = "[",
+	[Enum.KeyCode.RightBracket] = "]",
+	[Enum.KeyCode.RightParenthesis] = ")",
+	[Enum.KeyCode.LeftParenthesis] = "(",
+	[Enum.KeyCode.Semicolon] = ";",
+	[Enum.KeyCode.Quote] = "'",
+	[Enum.KeyCode.BackSlash] = "\\",
+	[Enum.KeyCode.Comma] = ",",
+	[Enum.KeyCode.Period] = ".",
+	[Enum.KeyCode.Slash] = "/",
+	[Enum.KeyCode.Asterisk] = "*",
+	[Enum.KeyCode.Plus] = "+",
+	[Enum.KeyCode.Backquote] = "`",
+	[Enum.UserInputType.MouseButton1] = "MOUSE-1",
+	[Enum.UserInputType.MouseButton2] = "MOUSE-2",
+	[Enum.UserInputType.MouseButton3] = "MOUSE-3"
+}
+
 local ElBlurSource = function()
 	local GuiSystem = {}
 	local RunService = game:GetService('RunService');
@@ -3086,7 +3136,7 @@ function Library.new(config)
 					ColorPickerPopup.Visible = true
 					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
 						BackgroundTransparency = 0.1,
-						Size = UDim2.new(0, 300, 0, 400)
+						Size = UDim2.new(0, 200, 0, 280)
 					}):Play()
 					
 					Twen:Create(DropShadow, TweenInfo.new(0.3), {
@@ -3535,6 +3585,152 @@ Library.NewAuth = function(conf)
 
 				end)
 			end)
+		end,
+		
+		Show = function()
+			MainFrame.Visible = true
+			MainDropShadow.Visible = true
+			BlueEffect.Visible = true
+			
+			Twen:Create(MainDropShadow,TweenInfo.new(0.5,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{
+				ImageTransparency = 0.3
+			}):Play();
+			
+			Twen:Create(MainFrame,TweenInfo.new(0.5,Enum.EasingStyle.Quint,Enum.EasingDirection.Out),{
+				Position = UDim2.new(0.5, 0, 0.5, 0),
+				Size = UDim2.new(0.8,0,0.8,0)
+			}):Play();
+		end,
+		
+		Hide = function()
+			Twen:Create(MainDropShadow,TweenInfo.new(0.5,Enum.EasingStyle.Quint,Enum.EasingDirection.In),{
+				ImageTransparency = 1
+			}):Play();
+			
+			Twen:Create(MainFrame,TweenInfo.new(0.5,Enum.EasingStyle.Quint,Enum.EasingDirection.In),{
+				Position = UDim2.new(0.5, 0, 1.5, 0),
+				Size = UDim2.new(0.8,0,0.8,0)
+			}):Play();
+			
+			task.delay(0.5, function()
+				MainFrame.Visible = false
+				MainDropShadow.Visible = false
+				BlueEffect.Visible = false
+			end)
+		end,
+		
+		Toggle = function()
+			if MainFrame.Visible then
+				WindowTable:Hide()
+			else
+				WindowTable:Show()
+			end
+		end,
+		
+		SetKeybind = function(key)
+			-- Update the keybind for toggling the UI
+			-- This will be used by the main hub keybind system
+			WindowTable.Keybind = key
+		end,
+		
+		-- Keybind display for clicking to change
+		CreateKeybindDisplay = function(parent, defaultKey, callback)
+			local keybindDisplay = utility.create("Square", {
+				Filled = true,
+				Thickness = 0,
+				Theme = "Object Background",
+				Size = UDim2.new(0, 60, 0, 16),
+				Position = UDim2.new(1, -70, 0, 0),
+				ZIndex = 8,
+				Parent = parent
+			})
+			
+			utility.outline(keybindDisplay, "Object Border")
+			
+			utility.create("Image", {
+				Size = UDim2.new(1, 0, 1, 0),
+				Transparency = 0.5,
+				ZIndex = 9,
+				Parent = keybindDisplay,
+				Data = library.gradient
+			})
+			
+			local keybindText = utility.create("Text", {
+				Text = "[" .. (keys[defaultKey] or tostring(defaultKey):gsub("Enum.KeyCode.", "")) .. "]",
+				Font = Drawing.Fonts.Plex,
+				Size = 13,
+				Position = UDim2.new(0.5, 0, 0, 1),
+				Center = true,
+				Theme = "Text",
+				ZIndex = 10,
+				Outline = true,
+				Parent = keybindDisplay
+			})
+			
+			local currentKey = defaultKey
+			local binding = false
+			
+			local function setKey(newKey)
+				if tostring(newKey):find("Enum.KeyCode.") then
+					newKey = Enum.KeyCode[tostring(newKey):gsub("Enum.KeyCode.", "")]
+				elseif tostring(newKey):find("Enum.UserInputType.") then
+					newKey = Enum.UserInputType[tostring(newKey):gsub("Enum.UserInputType.", "")]
+				end
+				
+				currentKey = newKey
+				keybindText.Text = "[" .. (keys[newKey] or tostring(newKey):gsub("Enum.KeyCode.", "")) .. "]"
+				utility.changeobjecttheme(keybindText, "Text")
+				
+				if callback then
+					callback(newKey)
+				end
+			end
+			
+			local mouseover = false
+			
+			keybindDisplay.MouseEnter:Connect(function()
+				mouseover = true
+				keybindDisplay.Color = utility.changecolor(library.theme["Object Background"], 3)
+			end)
+			
+			keybindDisplay.MouseLeave:Connect(function()
+				mouseover = false
+				keybindDisplay.Color = library.theme["Object Background"]
+			end)
+			
+			keybindDisplay.MouseButton1Down:Connect(function()
+				keybindDisplay.Color = utility.changecolor(library.theme["Object Background"], 6)
+			end)
+			
+			keybindDisplay.MouseButton1Up:Connect(function()
+				keybindDisplay.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+			end)
+			
+			keybindDisplay.MouseButton1Click:Connect(function()
+				if not binding then
+					keybindText.Text = "..."
+					utility.changeobjecttheme(keybindText, "Disabled Text")
+					
+					binding = utility.connect(services.InputService.InputBegan, function(input, gpe)
+						setKey(input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode or input.UserInputType)
+						utility.disconnect(binding)
+						task.wait()
+						binding = nil
+					end)
+				end
+			end)
+			
+			local keybindDisplayTypes = utility.table({}, true)
+			
+			function keybindDisplayTypes:Set(newKey)
+				setKey(newKey)
+			end
+			
+			function keybindDisplayTypes:Get()
+				return currentKey
+			end
+			
+			return keybindDisplayTypes
 		end,
 	}
 end;
