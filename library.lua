@@ -2837,7 +2837,7 @@ function Library.new(config)
 				ColorPickerPopup.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorPickerPopup.BorderSizePixel = 0
 				ColorPickerPopup.Position = UDim2.new(0.5, 0, 0.5, 0)
-				ColorPickerPopup.Size = UDim2.new(0, 300, 0, 400)
+				ColorPickerPopup.Size = UDim2.new(0, 250, 0, 320)
 				ColorPickerPopup.ZIndex = 100
 				ColorPickerPopup.Visible = false
 
@@ -2850,7 +2850,7 @@ function Library.new(config)
 				DropShadow.BackgroundTransparency = 1.000
 				DropShadow.BorderSizePixel = 0
 				DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-				DropShadow.Size = UDim2.new(1, 47, 1, 47)
+				DropShadow.Size = UDim2.new(1, 30, 1, 30)
 				DropShadow.ZIndex = 99
 				DropShadow.Image = "rbxassetid://6015897843"
 				DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
@@ -2889,7 +2889,7 @@ function Library.new(config)
 				ColorWheel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorWheel.BorderSizePixel = 0
 				ColorWheel.Position = UDim2.new(0.5, 0, 0.25, 0)
-				ColorWheel.Size = UDim2.new(0.6, 0, 0.3, 0)
+				ColorWheel.Size = UDim2.new(0.5, 0, 0.25, 0)
 				ColorWheel.ZIndex = 101
 				ColorWheel.Image = "rbxassetid://14042013399" -- Color wheel image
 				ColorWheel.ImageTransparency = 0
@@ -2904,7 +2904,7 @@ function Library.new(config)
 				ColorSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorSlider.BorderSizePixel = 0
 				ColorSlider.Position = UDim2.new(0.5, 0, 0.45, 0)
-				ColorSlider.Size = UDim2.new(0.6, 0, 0.05, 0)
+				ColorSlider.Size = UDim2.new(0.5, 0, 0.04, 0)
 				ColorSlider.ZIndex = 101
 
 				UICorner_6.CornerRadius = UDim.new(0.5, 0)
@@ -2935,7 +2935,7 @@ function Library.new(config)
 				RGBInputs.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				RGBInputs.BorderSizePixel = 0
 				RGBInputs.Position = UDim2.new(0.5, 0, 0.6, 0)
-				RGBInputs.Size = UDim2.new(0.8, 0, 0.25, 0)
+				RGBInputs.Size = UDim2.new(0.7, 0, 0.2, 0)
 				RGBInputs.ZIndex = 101
 
 				-- R Input
@@ -3050,7 +3050,7 @@ function Library.new(config)
 				ApplyButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ApplyButton.BorderSizePixel = 0
 				ApplyButton.Position = UDim2.new(0.5, 0, 0.85, 0)
-				ApplyButton.Size = UDim2.new(0.4, 0, 0.08, 0)
+				ApplyButton.Size = UDim2.new(0.35, 0, 0.07, 0)
 				ApplyButton.ZIndex = 101
 				ApplyButton.Font = Enum.Font.GothamBold
 				ApplyButton.Text = "Apply"
