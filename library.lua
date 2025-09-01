@@ -2894,7 +2894,7 @@ function Library.new(config)
 				ColorPickerPopup.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorPickerPopup.BorderSizePixel = 0
 				ColorPickerPopup.Position = UDim2.new(0.75, 0, 0.1, 0)
-				ColorPickerPopup.Size = UDim2.new(0, 0, 0, 0)
+				ColorPickerPopup.Size = UDim2.new(0, 120, 0, 0)
 				ColorPickerPopup.ZIndex = 100
 				ColorPickerPopup.Visible = false
 
@@ -2938,51 +2938,11 @@ function Library.new(config)
 				UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
 				UIGradient_2.Parent = Title
 
-				-- Main color selection area (large square for hue/saturation)
-				ColorSelectionArea.Name = "ColorSelectionArea"
-				ColorSelectionArea.Parent = ColorPickerPopup
-				ColorSelectionArea.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ColorSelectionArea.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ColorSelectionArea.BorderSizePixel = 0
-				ColorSelectionArea.Position = UDim2.new(0, 8, 0, 32)
-				ColorSelectionArea.Size = UDim2.new(0, 120, 0, 120)
-				ColorSelectionArea.ZIndex = 101
-				ColorSelectionArea.Visible = false
+				-- Main color selection area (large square for hue/saturation) - REMOVED
 
-				UICorner_5.CornerRadius = UDim.new(0, 4)
-				UICorner_5.Parent = ColorSelectionArea
+				-- Color selection area and related elements removed for compact design
 
-				UIStroke_4.Color = Color3.fromRGB(60, 60, 60)
-				UIStroke_4.Parent = ColorSelectionArea
-
-				ColorWheel.Name = "ColorWheel"
-				ColorWheel.Parent = ColorSelectionArea
-				ColorWheel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ColorWheel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ColorWheel.BorderSizePixel = 0
-				ColorWheel.Size = UDim2.new(1, 0, 1, 0)
-				ColorWheel.ZIndex = 102
-				ColorWheel.Image = "rbxassetid://14042013399" -- Color wheel image
-				ColorWheel.ImageTransparency = 0
-
-				UICorner_6.CornerRadius = UDim.new(0, 4)
-				UICorner_6.Parent = ColorWheel
-
-				ColorPicker.Name = "ColorPicker"
-				ColorPicker.Parent = ColorSelectionArea
-				ColorPicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				ColorPicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ColorPicker.BorderSizePixel = 0
-				ColorPicker.Position = UDim2.new(0, 0, 0, 0)
-				ColorPicker.Size = UDim2.new(0, 8, 0, 8)
-				ColorPicker.ZIndex = 103
-
-				UICorner_7.CornerRadius = UDim.new(0.5, 0)
-				UICorner_7.Parent = ColorPicker
-
-				UIStroke_5.Color = Color3.fromRGB(0, 0, 0)
-				UIStroke_5.Thickness = 2
-				UIStroke_5.Parent = ColorPicker
+				-- Color picker elements removed
 
 				-- Hue slider (horizontal rainbow)
 				HueSlider.Name = "HueSlider"
@@ -2990,8 +2950,8 @@ function Library.new(config)
 				HueSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				HueSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				HueSlider.BorderSizePixel = 0
-				HueSlider.Position = UDim2.new(0, 8, 0, 160)
-				HueSlider.Size = UDim2.new(0, 120, 0, 12)
+				HueSlider.Position = UDim2.new(0, 8, 0, 40)
+				HueSlider.Size = UDim2.new(0, 104, 0, 12)
 				HueSlider.ZIndex = 101
 				HueSlider.Visible = false
 
@@ -3035,7 +2995,7 @@ function Library.new(config)
 				RGBDisplay.BackgroundTransparency = 1.000
 				RGBDisplay.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				RGBDisplay.BorderSizePixel = 0
-				RGBDisplay.Position = UDim2.new(0, 8, 0, 180)
+				RGBDisplay.Position = UDim2.new(0, 8, 0, 60)
 				RGBDisplay.Size = UDim2.new(1, -16, 0, 16)
 				RGBDisplay.ZIndex = 101
 				RGBDisplay.Font = Enum.Font.Gotham
@@ -3082,13 +3042,12 @@ function Library.new(config)
 					isOpen = true
 					
 					ColorPickerPopup.Visible = true
-					ColorSelectionArea.Visible = true
 					HueSlider.Visible = true
 					RGBDisplay.Visible = true
 					
 					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
 						BackgroundTransparency = 0.1,
-						Size = UDim2.new(0, 200, 0, 280)
+						Size = UDim2.new(0, 120, 0, 80)
 					}):Play()
 					
 					Twen:Create(DropShadow, TweenInfo.new(0.3), {
@@ -3100,7 +3059,6 @@ function Library.new(config)
 					if not isOpen then return end
 					isOpen = false
 					
-					ColorSelectionArea.Visible = false
 					HueSlider.Visible = false
 					RGBDisplay.Visible = false
 					
