@@ -2890,11 +2890,11 @@ function Library.new(config)
 				ColorPickerPopup.Name = "ColorPickerPopup"
 				ColorPickerPopup.Parent = ScreenGui
 				ColorPickerPopup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-				ColorPickerPopup.BackgroundTransparency = 0.100
+				ColorPickerPopup.BackgroundTransparency = 1.000
 				ColorPickerPopup.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorPickerPopup.BorderSizePixel = 0
 				ColorPickerPopup.Position = UDim2.new(0.75, 0, 0.1, 0)
-				ColorPickerPopup.Size = UDim2.new(0, 200, 0, 280)
+				ColorPickerPopup.Size = UDim2.new(0, 0, 0, 0)
 				ColorPickerPopup.ZIndex = 100
 				ColorPickerPopup.Visible = false
 
@@ -2947,6 +2947,7 @@ function Library.new(config)
 				ColorSelectionArea.Position = UDim2.new(0, 8, 0, 32)
 				ColorSelectionArea.Size = UDim2.new(0, 120, 0, 120)
 				ColorSelectionArea.ZIndex = 101
+				ColorSelectionArea.Visible = false
 
 				UICorner_5.CornerRadius = UDim.new(0, 4)
 				UICorner_5.Parent = ColorSelectionArea
@@ -2992,6 +2993,7 @@ function Library.new(config)
 				HueSlider.Position = UDim2.new(0, 8, 0, 160)
 				HueSlider.Size = UDim2.new(0, 120, 0, 12)
 				HueSlider.ZIndex = 101
+				HueSlider.Visible = false
 
 				UICorner_8.CornerRadius = UDim.new(0.5, 0)
 				UICorner_8.Parent = HueSlider
@@ -3041,6 +3043,7 @@ function Library.new(config)
 				RGBDisplay.TextColor3 = Color3.fromRGB(255, 255, 255)
 				RGBDisplay.TextSize = 12.000
 				RGBDisplay.TextXAlignment = Enum.TextXAlignment.Left
+				RGBDisplay.Visible = false
 
 				UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
 				UIGradient_3.Parent = RGBDisplay
@@ -3079,6 +3082,10 @@ function Library.new(config)
 					isOpen = true
 					
 					ColorPickerPopup.Visible = true
+					ColorSelectionArea.Visible = true
+					HueSlider.Visible = true
+					RGBDisplay.Visible = true
+					
 					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
 						BackgroundTransparency = 0.1,
 						Size = UDim2.new(0, 200, 0, 280)
@@ -3092,6 +3099,10 @@ function Library.new(config)
 				local function closeColorPicker()
 					if not isOpen then return end
 					isOpen = false
+					
+					ColorSelectionArea.Visible = false
+					HueSlider.Visible = false
+					RGBDisplay.Visible = false
 					
 					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
 						BackgroundTransparency = 1,
