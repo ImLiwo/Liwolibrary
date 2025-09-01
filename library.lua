@@ -2752,58 +2752,102 @@ function Library.new(config)
 					Callback = function(color) end,
 				})
 
-				-- AirHub V2 style color picker implementation
-				local holder = Instance.new("Frame")
-				holder.Name = "ColorPickerHolder"
-				holder.Parent = Section
-				holder.BackgroundTransparency = 1
-				holder.Size = UDim2.new(1, 0, 0, 10)
-				holder.Position = UDim2.new(0, 0, 0, -1)
-				holder.ZIndex = 7
+				-- Match existing UI theme
+				local FunctionColorPicker = Instance.new("Frame")
+				FunctionColorPicker.Name = "FunctionColorPicker"
+				FunctionColorPicker.Parent = Section
+				FunctionColorPicker.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+				FunctionColorPicker.BackgroundTransparency = 0.800
+				FunctionColorPicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				FunctionColorPicker.BorderSizePixel = 0
+				FunctionColorPicker.Size = UDim2.new(0.949999988, 0, 0.5, 0)
+				FunctionColorPicker.ZIndex = 17
 
-				local title = Instance.new("TextLabel")
-				title.Name = "Title"
-				title.Parent = holder
-				title.BackgroundTransparency = 1
-				title.Size = UDim2.new(1, 0, 0, 10)
-				title.Position = UDim2.new(0, 0, 0, 0)
-				title.ZIndex = 7
-				title.Font = Enum.Font.Gotham
-				title.Text = colorConfig.Title
-				title.TextColor3 = Color3.fromRGB(255, 255, 255)
-				title.TextSize = 12
-				title.TextXAlignment = Enum.TextXAlignment.Left
+				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+				UIAspectRatioConstraint.Parent = FunctionColorPicker
 
-				-- Color preview square (like AirHub V2)
-				local colorSquare = Instance.new("Frame")
-				colorSquare.Name = "ColorSquare"
-				colorSquare.Parent = holder
-				colorSquare.BackgroundColor3 = colorConfig.Default
-				colorSquare.BorderColor3 = Color3.fromRGB(60, 60, 60)
-				colorSquare.BorderSizePixel = 1
-				colorSquare.Size = UDim2.new(0, 18, 0, 10)
-				colorSquare.Position = UDim2.new(1, -18, 0, 0)
-				colorSquare.ZIndex = 8
+				local TextInt = Instance.new("TextLabel")
+				TextInt.Name = "TextInt"
+				TextInt.Parent = FunctionColorPicker
+				TextInt.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TextInt.BackgroundTransparency = 1.000
+				TextInt.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				TextInt.BorderSizePixel = 0
+				TextInt.Position = UDim2.new(0.0199999996, 0, 0.100000001, 0)
+				TextInt.Size = UDim2.new(0.600000024, 0, 0.800000012, 0)
+				TextInt.ZIndex = 18
+				TextInt.Font = Enum.Font.Gotham
+				TextInt.Text = colorConfig.Title
+				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
+				TextInt.TextScaled = true
+				TextInt.TextSize = 14.000
+				TextInt.TextWrapped = true
+				TextInt.TextXAlignment = Enum.TextXAlignment.Left
 
-				local UICorner_square = Instance.new("UICorner")
-				UICorner_square.CornerRadius = UDim.new(0, 2)
-				UICorner_square.Parent = colorSquare
+				local UIGradient = Instance.new("UIGradient")
+				UIGradient.Rotation = 90
+				UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.75, 0.27), NumberSequenceKeypoint.new(1.00, 1.00)}
+				UIGradient.Parent = TextInt
 
-				-- Color picker popup window
+				local Button = Instance.new("TextButton")
+				Button.Name = "Button"
+				Button.Parent = FunctionColorPicker
+				Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Button.BackgroundTransparency = 1.000
+				Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Button.BorderSizePixel = 0
+				Button.Position = UDim2.new(0.75, 0, 0.100000001, 0)
+				Button.Size = UDim2.new(0.200000003, 0, 0.800000012, 0)
+				Button.ZIndex = 18
+				Button.Font = Enum.Font.Gotham
+				Button.Text = ""
+				Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+				Button.TextSize = 14.000
+
+				local UIStroke = Instance.new("UIStroke")
+				UIStroke.Color = Color3.fromRGB(60, 60, 60)
+				UIStroke.Thickness = 1.000
+				UIStroke.Parent = Button
+
+				local System = Instance.new("Frame")
+				System.Name = "System"
+				System.Parent = Button
+				System.BackgroundColor3 = colorConfig.Default
+				System.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				System.BorderSizePixel = 0
+				System.Position = UDim2.new(0.100000001, 0, 0.100000001, 0)
+				System.Size = UDim2.new(0.800000012, 0, 0.800000012, 0)
+				System.ZIndex = 19
+
+				local UICorner = Instance.new("UICorner")
+				UICorner.CornerRadius = UDim.new(0, 2)
+				UICorner.Parent = System
+
+				local UIStroke_2 = Instance.new("UIStroke")
+				UIStroke_2.Color = Color3.fromRGB(60, 60, 60)
+				UIStroke_2.Thickness = 1.000
+				UIStroke_2.Parent = System
+
+				-- Color picker popup window (matching UI theme)
 				local popup = Instance.new("Frame")
 				popup.Name = "ColorPickerPopup"
-				popup.Parent = game:GetService("CoreGui") -- Parent to CoreGui for proper layering
-				popup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+				popup.Parent = game:GetService("CoreGui")
+				popup.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
 				popup.BorderColor3 = Color3.fromRGB(60, 60, 60)
 				popup.BorderSizePixel = 1
 				popup.Size = UDim2.new(0, 200, 0, 150)
-				popup.Position = UDim2.new(0, 100, 0, 100) -- Fixed position for now
+				popup.Position = UDim2.new(0, 100, 0, 100)
 				popup.ZIndex = 11
 				popup.Visible = false
 
 				local UICorner_popup = Instance.new("UICorner")
-				UICorner_popup.CornerRadius = UDim.new(0, 4)
+				UICorner_popup.CornerRadius = UDim.new(0, 7)
 				UICorner_popup.Parent = popup
+
+				local UIStroke_popup = Instance.new("UIStroke")
+				UIStroke_popup.Color = Color3.fromRGB(60, 60, 60)
+				UIStroke_popup.Thickness = 1.000
+				UIStroke_popup.Parent = popup
 
 				-- Add some basic color buttons to the popup
 				local colors = {
@@ -2824,11 +2868,18 @@ function Library.new(config)
 					colorButton.BackgroundColor3 = color
 					colorButton.BorderSizePixel = 0
 					colorButton.Text = ""
+					colorButton.Font = Enum.Font.Gotham
+					colorButton.TextSize = 14
 					colorButton.Parent = popup
 					
 					local UICorner_color = Instance.new("UICorner")
-					UICorner_color.CornerRadius = UDim.new(0, 3)
+					UICorner_color.CornerRadius = UDim.new(0, 2)
 					UICorner_color.Parent = colorButton
+					
+					local UIStroke_color = Instance.new("UIStroke")
+					UIStroke_color.Color = Color3.fromRGB(60, 60, 60)
+					UIStroke_color.Thickness = 1.000
+					UIStroke_color.Parent = colorButton
 					
 					colorButton.MouseButton1Click:Connect(function()
 						updateColor(color)
@@ -2841,16 +2892,13 @@ function Library.new(config)
 				-- Update color function
 				local function updateColor(newColor)
 					currentColor = newColor
-					colorSquare.BackgroundColor3 = newColor
+					System.BackgroundColor3 = newColor
 					colorConfig.Callback(newColor)
 				end
 
 				-- Click to toggle popup
-				colorSquare.InputBegan:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						popup.Visible = not popup.Visible
-						print("Color picker clicked, popup visible:", popup.Visible) -- Debug
-					end
+				Button.MouseButton1Click:Connect(function()
+					popup.Visible = not popup.Visible
 				end)
 
 				-- Initialize
@@ -2858,7 +2906,7 @@ function Library.new(config)
 
 				return {
 					Visible = function(newindx)
-						holder.Visible = newindx
+						FunctionColorPicker.Visible = newindx
 					end,
 					Value = function(color)
 						updateColor(color)
