@@ -2753,68 +2753,73 @@ function Library.new(config)
 					Callback = function(color) end,
 				})
 
-				-- Small icon display (like AirHub V2)
-				local icon = Instance.new("TextButton")
-				icon.Name = "ColorIcon"
-				icon.Parent = Section
-				icon.BackgroundColor3 = colorConfig.Default
-				icon.BorderColor3 = Color3.fromRGB(60, 60, 60)
-				icon.BorderSizePixel = 1
-				icon.Size = UDim2.new(0, 18, 0, 10)
-				icon.Position = UDim2.new(1, -18, 0, 2)
-				icon.ZIndex = 8
-				icon.Text = ""
-				icon.TextTransparency = 1
+				-- AirHub V2 style color picker implementation
+				local holder = Instance.new("Frame")
+				holder.Name = "ColorPickerHolder"
+				holder.Parent = Section
+				holder.BackgroundTransparency = 1
+				holder.Size = UDim2.new(1, 0, 0, 10)
+				holder.Position = UDim2.new(0, 0, 0, -1)
+				holder.ZIndex = 7
 
-				local UICorner_icon = Instance.new("UICorner")
-				UICorner_icon.CornerRadius = UDim.new(0, 2)
-				UICorner_icon.Parent = icon
-
-				-- Title text
 				local title = Instance.new("TextLabel")
 				title.Name = "Title"
-				title.Parent = Section
-				title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				title.BackgroundTransparency = 1.000
-				title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				title.BorderSizePixel = 0
-				title.Position = UDim2.new(0, 8, 0, 0)
-				title.Size = UDim2.new(1, -30, 0, 14)
-				title.ZIndex = 6
+				title.Parent = holder
+				title.BackgroundTransparency = 1
+				title.Size = UDim2.new(1, 0, 0, 10)
+				title.Position = UDim2.new(0, 0, 0, 0)
+				title.ZIndex = 7
 				title.Font = Enum.Font.Gotham
 				title.Text = colorConfig.Title
 				title.TextColor3 = Color3.fromRGB(255, 255, 255)
-				title.TextSize = 12.000
+				title.TextSize = 12
 				title.TextXAlignment = Enum.TextXAlignment.Left
 
-				-- Large color picker window (hidden by default, positioned relative to main UI)
-				local window = Instance.new("Frame")
-				window.Name = "ColorPickerWindow"
-				window.Parent = Section -- Parent to Section instead of ScreenGui
-				window.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-				window.BorderColor3 = Color3.fromRGB(60, 60, 60)
-				window.BorderSizePixel = 1
-				window.Size = UDim2.new(0, 192, 0, 158)
-				window.Position = UDim2.new(1, 5, 0, 0) -- Position next to the section
-				window.ZIndex = 11
-				window.Visible = false
+				-- Color preview square (like AirHub V2)
+				local colorSquare = Instance.new("Frame")
+				colorSquare.Name = "ColorSquare"
+				colorSquare.Parent = holder
+				colorSquare.BackgroundColor3 = colorConfig.Default
+				colorSquare.BorderColor3 = Color3.fromRGB(60, 60, 60)
+				colorSquare.BorderSizePixel = 1
+				colorSquare.Size = UDim2.new(0, 18, 0, 10)
+				colorSquare.Position = UDim2.new(1, -18, 0, 0)
+				colorSquare.ZIndex = 8
 
-				local UICorner_window = Instance.new("UICorner")
-				UICorner_window.CornerRadius = UDim.new(0, 4)
-				UICorner_window.Parent = window
+				local UICorner_square = Instance.new("UICorner")
+				UICorner_square.CornerRadius = UDim.new(0, 2)
+				UICorner_square.Parent = colorSquare
+
+				-- Color picker popup window
+				local popup = Instance.new("Frame")
+				popup.Name = "ColorPickerPopup"
+				popup.Parent = holder
+				popup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+				popup.BorderColor3 = Color3.fromRGB(60, 60, 60)
+				popup.BorderSizePixel = 1
+				popup.Size = UDim2.new(0, 200, 0, 150)
+				popup.Position = UDim2.new(1, 5, 0, 0)
+				popup.ZIndex = 11
+				popup.Visible = false
+
+				local UICorner_popup = Instance.new("UICorner")
+				UICorner_popup.CornerRadius = UDim.new(0, 4)
+				UICorner_popup.Parent = popup
 
 				local currentColor = colorConfig.Default
 
 				-- Update color function
 				local function updateColor(newColor)
 					currentColor = newColor
-					icon.BackgroundColor3 = newColor
+					colorSquare.BackgroundColor3 = newColor
 					colorConfig.Callback(newColor)
 				end
 
-				-- Click to toggle window
-				icon.MouseButton1Click:Connect(function()
-					window.Visible = not window.Visible
+				-- Click to toggle popup
+				colorSquare.InputBegan:Connect(function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						popup.Visible = not popup.Visible
+					end
 				end)
 
 				-- Initialize
@@ -2822,8 +2827,7 @@ function Library.new(config)
 
 				return {
 					Visible = function(newindx)
-						icon.Visible = newindx
-						title.Visible = newindx
+						holder.Visible = newindx
 					end,
 					Value = function(color)
 						updateColor(color)
