@@ -2753,400 +2753,84 @@ function Library.new(config)
 					Callback = function(color) end,
 				})
 
-				-- Create the main color picker frame (small compact version)
-				local FunctionColorPicker = Instance.new("Frame")
-				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
-				local TextInt = Instance.new("TextLabel")
-				local UIGradient = Instance.new("UIGradient")
-				local UIStroke = Instance.new("UIStroke")
-				local UICorner = Instance.new("UICorner")
-				local ColorFrame = Instance.new("Frame")
-				local UICorner_2 = Instance.new("UICorner")
-				local UIStroke_2 = Instance.new("UIStroke")
-				local ColorPreview = Instance.new("Frame")
-				local UICorner_3 = Instance.new("UICorner")
-				local Button = Instance.new("TextButton")
+				-- Small icon display (like AirHub V2)
+				local icon = Instance.new("Frame")
+				icon.Name = "ColorIcon"
+				icon.Parent = Section
+				icon.BackgroundColor3 = colorConfig.Default
+				icon.BorderColor3 = Color3.fromRGB(60, 60, 60)
+				icon.BorderSizePixel = 1
+				icon.Size = UDim2.new(0, 18, 0, 10)
+				icon.Position = UDim2.new(1, -18, 0, 2)
+				icon.ZIndex = 8
 
-				FunctionColorPicker.Name = "FunctionColorPicker"
-				FunctionColorPicker.Parent = Section
-				FunctionColorPicker.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
-				FunctionColorPicker.BackgroundTransparency = 0.800
-				FunctionColorPicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				FunctionColorPicker.BorderSizePixel = 0
-				FunctionColorPicker.Size = UDim2.new(0.949999988, 0, 0, 30)
-				FunctionColorPicker.ZIndex = 17
+				local UICorner_icon = Instance.new("UICorner")
+				UICorner_icon.CornerRadius = UDim.new(0, 2)
+				UICorner_icon.Parent = icon
 
-				UIAspectRatioConstraint.Parent = FunctionColorPicker
-				UIAspectRatioConstraint.AspectRatio = 5.000
-				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+				-- Title text
+				local title = Instance.new("TextLabel")
+				title.Name = "Title"
+				title.Parent = Section
+				title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				title.BackgroundTransparency = 1.000
+				title.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				title.BorderSizePixel = 0
+				title.Position = UDim2.new(0, 8, 0, 0)
+				title.Size = UDim2.new(1, -30, 0, 14)
+				title.ZIndex = 6
+				title.Font = Enum.Font.Gotham
+				title.Text = colorConfig.Title
+				title.TextColor3 = Color3.fromRGB(255, 255, 255)
+				title.TextSize = 12.000
+				title.TextXAlignment = Enum.TextXAlignment.Left
 
-				TextInt.Name = "TextInt"
-				TextInt.Parent = FunctionColorPicker
-				TextInt.AnchorPoint = Vector2.new(0, 0.5)
-				TextInt.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				TextInt.BackgroundTransparency = 1.000
-				TextInt.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				TextInt.BorderSizePixel = 0
-				TextInt.Position = UDim2.new(0, 8, 0.5, 0)
-				TextInt.Size = UDim2.new(0.6, 0, 0.8, 0)
-				TextInt.ZIndex = 18
-				TextInt.Font = Enum.Font.GothamBold
-				TextInt.Text = colorConfig.Title
-				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
-				TextInt.TextScaled = true
-				TextInt.TextSize = 14.000
-				TextInt.TextTransparency = 0.250
-				TextInt.TextWrapped = true
-				TextInt.TextXAlignment = Enum.TextXAlignment.Left
+				-- Large color picker window (hidden by default, positioned relative to main UI)
+				local window = Instance.new("Frame")
+				window.Name = "ColorPickerWindow"
+				window.Parent = Section -- Parent to Section instead of ScreenGui
+				window.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+				window.BorderColor3 = Color3.fromRGB(60, 60, 60)
+				window.BorderSizePixel = 1
+				window.Size = UDim2.new(0, 192, 0, 158)
+				window.Position = UDim2.new(1, 5, 0, 0) -- Position next to the section
+				window.ZIndex = 11
+				window.Visible = false
 
-				UIGradient.Rotation = 90
-				UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.84, 0.25), NumberSequenceKeypoint.new(1.00, 1.00)}
-				UIGradient.Parent = TextInt
+				local UICorner_window = Instance.new("UICorner")
+				UICorner_window.CornerRadius = UDim.new(0, 4)
+				UICorner_window.Parent = window
 
-				UIStroke.Transparency = 0.950
-				UIStroke.Color = Color3.fromRGB(255, 255, 255)
-				UIStroke.Parent = FunctionColorPicker
-
-				UICorner.CornerRadius = UDim.new(0, 2)
-				UICorner.Parent = FunctionColorPicker
-
-				ColorFrame.Name = "ColorFrame"
-				ColorFrame.Parent = FunctionColorPicker
-				ColorFrame.AnchorPoint = Vector2.new(1, 0.5)
-				ColorFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-				ColorFrame.BackgroundTransparency = 0.800
-				ColorFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ColorFrame.BorderSizePixel = 0
-				ColorFrame.ClipsDescendants = true
-				ColorFrame.Position = UDim2.new(1, -8, 0.5, 0)
-				ColorFrame.Size = UDim2.new(0, 20, 0, 20)
-				ColorFrame.ZIndex = 18
-
-				UICorner_2.CornerRadius = UDim.new(0, 2)
-				UICorner_2.Parent = ColorFrame
-
-				UIStroke_2.Transparency = 0.975
-				UIStroke_2.Color = Color3.fromRGB(255, 255, 255)
-				UIStroke_2.Parent = ColorFrame
-
-				ColorPreview.Name = "ColorPreview"
-				ColorPreview.Parent = ColorFrame
-				ColorPreview.AnchorPoint = Vector2.new(0.5, 0.5)
-				ColorPreview.BackgroundColor3 = colorConfig.Default
-				ColorPreview.BorderColor3 = Color3.fromRGB(255, 255, 255)
-				ColorPreview.BorderSizePixel = 1
-				ColorPreview.Position = UDim2.new(0.5, 0, 0.5, 0)
-				ColorPreview.Size = UDim2.new(1, -2, 1, -2)
-				ColorPreview.ZIndex = 19
-
-				UICorner_3.CornerRadius = UDim.new(0, 2)
-				UICorner_3.Parent = ColorPreview
-
-				Button.Name = "Button"
-				Button.Parent = FunctionColorPicker
-				Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Button.BackgroundTransparency = 1.000
-				Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				Button.BorderSizePixel = 0
-				Button.Size = UDim2.new(1, 0, 1, 0)
-				Button.ZIndex = 25
-				Button.Font = Enum.Font.SourceSans
-				Button.Text = ""
-				Button.TextColor3 = Color3.fromRGB(0, 0, 0)
-				Button.TextSize = 14.000
-				Button.TextTransparency = 1.000
-
-				-- Create the large color picker popup (hidden by default)
-				local ColorPickerPopup = Instance.new("Frame")
-				local UICorner_4 = Instance.new("UICorner")
-				local DropShadow = Instance.new("ImageLabel")
-				local UIStroke_3 = Instance.new("UIStroke")
-				local Title = Instance.new("TextLabel")
-				local UIGradient_2 = Instance.new("UIGradient")
-				
-				-- Main color selection area (large square)
-				local ColorSelectionArea = Instance.new("Frame")
-				local UICorner_5 = Instance.new("UICorner")
-				local UIStroke_4 = Instance.new("UIStroke")
-				local ColorWheel = Instance.new("ImageLabel")
-				local UICorner_6 = Instance.new("UICorner")
-				local ColorPicker = Instance.new("Frame")
-				local UICorner_7 = Instance.new("UICorner")
-				local UIStroke_5 = Instance.new("UIStroke")
-				
-				-- Hue slider (horizontal rainbow)
-				local HueSlider = Instance.new("Frame")
-				local UICorner_8 = Instance.new("UICorner")
-				local UIStroke_6 = Instance.new("UIStroke")
-				local HueGradient = Instance.new("UIGradient")
-				local HuePicker = Instance.new("Frame")
-				local UICorner_9 = Instance.new("UICorner")
-				local UIStroke_7 = Instance.new("UIStroke")
-				
-				-- RGB input display
-				local RGBDisplay = Instance.new("TextLabel")
-				local UIGradient_3 = Instance.new("UIGradient")
-
-				ColorPickerPopup.Name = "ColorPickerPopup"
-				ColorPickerPopup.Parent = ScreenGui
-				ColorPickerPopup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-				ColorPickerPopup.BackgroundTransparency = 1.000
-				ColorPickerPopup.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ColorPickerPopup.BorderSizePixel = 0
-				ColorPickerPopup.Position = UDim2.new(0.75, 0, 0.1, 0)
-				ColorPickerPopup.Size = UDim2.new(0, 120, 0, 0)
-				ColorPickerPopup.ZIndex = 100
-				ColorPickerPopup.Visible = false
-
-				UICorner_4.CornerRadius = UDim.new(0, 8)
-				UICorner_4.Parent = ColorPickerPopup
-
-				DropShadow.Name = "DropShadow"
-				DropShadow.Parent = ColorPickerPopup
-				DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-				DropShadow.BackgroundTransparency = 1.000
-				DropShadow.BorderSizePixel = 0
-				DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-				DropShadow.Size = UDim2.new(1, 20, 1, 20)
-				DropShadow.ZIndex = 99
-				DropShadow.Image = "rbxassetid://6015897843"
-				DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-				DropShadow.ImageTransparency = 0.600
-				DropShadow.ScaleType = Enum.ScaleType.Slice
-				DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
-
-				UIStroke_3.Color = Color3.fromRGB(60, 60, 60)
-				UIStroke_3.Parent = ColorPickerPopup
-
-				Title.Name = "Title"
-				Title.Parent = ColorPickerPopup
-				Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Title.BackgroundTransparency = 1.000
-				Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				Title.BorderSizePixel = 0
-				Title.Position = UDim2.new(0, 8, 0, 8)
-				Title.Size = UDim2.new(0.5, 0, 0, 20)
-				Title.ZIndex = 101
-				Title.Font = Enum.Font.GothamBold
-				Title.Text = colorConfig.Title
-				Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-				Title.TextScaled = true
-				Title.TextSize = 14.000
-				Title.TextWrapped = true
-				Title.TextXAlignment = Enum.TextXAlignment.Left
-
-				UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
-				UIGradient_2.Parent = Title
-
-				-- Main color selection area (large square for hue/saturation) - REMOVED
-
-				-- Color selection area and related elements removed for compact design
-
-				-- Color picker elements removed
-
-				-- Hue slider (horizontal rainbow)
-				HueSlider.Name = "HueSlider"
-				HueSlider.Parent = ColorPickerPopup
-				HueSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				HueSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				HueSlider.BorderSizePixel = 0
-				HueSlider.Position = UDim2.new(0, 8, 0, 40)
-				HueSlider.Size = UDim2.new(0, 104, 0, 12)
-				HueSlider.ZIndex = 101
-				HueSlider.Visible = false
-
-				UICorner_8.CornerRadius = UDim.new(0.5, 0)
-				UICorner_8.Parent = HueSlider
-
-				UIStroke_6.Color = Color3.fromRGB(60, 60, 60)
-				UIStroke_6.Parent = HueSlider
-
-				HueGradient.Color = ColorSequence.new{
-					ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
-					ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
-					ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
-					ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
-					ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
-					ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
-					ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 0))
-				}
-				HueGradient.Parent = HueSlider
-
-				HuePicker.Name = "HuePicker"
-				HuePicker.Parent = HueSlider
-				HuePicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				HuePicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				HuePicker.BorderSizePixel = 0
-				HuePicker.Position = UDim2.new(0, 0, 0, 0)
-				HuePicker.Size = UDim2.new(0, 2, 1, 0)
-				HuePicker.ZIndex = 102
-
-				UICorner_9.CornerRadius = UDim.new(0.5, 0)
-				UICorner_9.Parent = HuePicker
-
-				UIStroke_7.Color = Color3.fromRGB(0, 0, 0)
-				UIStroke_7.Thickness = 1
-				UIStroke_7.Parent = HuePicker
-
-				-- RGB display
-				RGBDisplay.Name = "RGBDisplay"
-				RGBDisplay.Parent = ColorPickerPopup
-				RGBDisplay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				RGBDisplay.BackgroundTransparency = 1.000
-				RGBDisplay.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				RGBDisplay.BorderSizePixel = 0
-				RGBDisplay.Position = UDim2.new(0, 8, 0, 60)
-				RGBDisplay.Size = UDim2.new(1, -16, 0, 16)
-				RGBDisplay.ZIndex = 101
-				RGBDisplay.Font = Enum.Font.Gotham
-				RGBDisplay.Text = string.format("%d, %d, %d", math.floor(colorConfig.Default.R * 255), math.floor(colorConfig.Default.G * 255), math.floor(colorConfig.Default.B * 255))
-				RGBDisplay.TextColor3 = Color3.fromRGB(255, 255, 255)
-				RGBDisplay.TextSize = 12.000
-				RGBDisplay.TextXAlignment = Enum.TextXAlignment.Left
-				RGBDisplay.Visible = false
-
-				UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
-				UIGradient_3.Parent = RGBDisplay
-
-				-- Variables
 				local currentColor = colorConfig.Default
-				local hue, saturation, value = currentColor:ToHSV()
-				local isOpen = false
 
-				-- Functions
-				local function updateColorPreview()
-					ColorPreview.BackgroundColor3 = currentColor
+				-- Update color function
+				local function updateColor(newColor)
+					currentColor = newColor
+					icon.BackgroundColor3 = newColor
+					colorConfig.Callback(newColor)
 				end
 
-				local function updateColor()
-					currentColor = Color3.fromHSV(hue, saturation, value)
-					ColorWheel.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
-					RGBDisplay.Text = string.format("%d, %d, %d", math.floor(currentColor.R * 255), math.floor(currentColor.G * 255), math.floor(currentColor.B * 255))
-					colorConfig.Callback(currentColor)
-					updateColorPreview()
-				end
-
-				local function updateColorPickerPosition()
-					local x = saturation * ColorSelectionArea.AbsoluteSize.X
-					local y = (1 - value) * ColorSelectionArea.AbsoluteSize.Y
-					ColorPicker.Position = UDim2.new(0, math.clamp(x - 4, 0, ColorSelectionArea.AbsoluteSize.X - 8), 0, math.clamp(y - 4, 0, ColorSelectionArea.AbsoluteSize.Y - 8))
-				end
-
-				local function updateHuePickerPosition()
-					local x = hue * HueSlider.AbsoluteSize.X
-					HuePicker.Position = UDim2.new(0, math.clamp(x - 1, 0, HueSlider.AbsoluteSize.X - 2), 0, 0)
-				end
-
-				local function openColorPicker()
-					if isOpen then return end
-					isOpen = true
-					
-					ColorPickerPopup.Visible = true
-					HueSlider.Visible = true
-					RGBDisplay.Visible = true
-					
-					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
-						BackgroundTransparency = 0.1,
-						Size = UDim2.new(0, 120, 0, 80)
-					}):Play()
-					
-					Twen:Create(DropShadow, TweenInfo.new(0.3), {
-						ImageTransparency = 0.6
-					}):Play()
-				end
-
-				local function closeColorPicker()
-					if not isOpen then return end
-					isOpen = false
-					
-					HueSlider.Visible = false
-					RGBDisplay.Visible = false
-					
-					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
-						BackgroundTransparency = 1,
-						Size = UDim2.new(0, 0, 0, 0)
-					}):Play()
-					
-					Twen:Create(DropShadow, TweenInfo.new(0.3), {
-						ImageTransparency = 1
-					}):Play()
-					
-					task.wait(0.3)
-					ColorPickerPopup.Visible = false
-				end
-
-				-- Mouse interactions for color selection area
-				local function onColorAreaInput(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						local mousePos = input.Position
-						local areaPos = ColorSelectionArea.AbsolutePosition
-						local areaSize = ColorSelectionArea.AbsoluteSize
-						
-						local relativeX = (mousePos.X - areaPos.X) / areaSize.X
-						local relativeY = (mousePos.Y - areaPos.Y) / areaSize.Y
-						
-						saturation = math.clamp(relativeX, 0, 1)
-						value = math.clamp(1 - relativeY, 0, 1)
-						
-						updateColor()
-						updateColorPickerPosition()
-					end
-				end
-
-				-- Mouse interactions for hue slider
-				local function onHueSliderInput(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						local mousePos = input.Position
-						local sliderPos = HueSlider.AbsolutePosition
-						local sliderSize = HueSlider.AbsoluteSize
-						
-						local relativeX = (mousePos.X - sliderPos.X) / sliderSize.X
-						hue = math.clamp(relativeX, 0, 1)
-						
-						updateColor()
-						updateHuePickerPosition()
-					end
-				end
-
-				-- Button click to open color picker
-				Button.MouseButton1Click:Connect(openColorPicker)
-
-				-- Connect input events for the popup
-				ColorSelectionArea.InputBegan:Connect(onColorAreaInput)
-				HueSlider.InputBegan:Connect(onHueSliderInput)
-
-				-- Close color picker when clicking outside
-				Input.InputBegan:Connect(function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
-						if isOpen and not ColorPickerPopup:IsDescendantOf(game.Players.LocalPlayer.PlayerGui) then
-							closeColorPicker()
-						end
-					end
+				-- Click to toggle window
+				icon.MouseButton1Click:Connect(function()
+					window.Visible = not window.Visible
 				end)
 
 				-- Initialize
-				updateColorPreview()
-				updateColorPickerPosition()
-				updateHuePickerPosition()
-				updateColor()
+				updateColor(colorConfig.Default)
 
 				return {
 					Visible = function(newindx)
-						FunctionColorPicker.Visible = newindx
+						icon.Visible = newindx
+						title.Visible = newindx
 					end,
 					Value = function(color)
-						currentColor = color
-						hue, saturation, value = color:ToHSV()
-						updateColor()
-						updateColorPickerPosition()
-						updateHuePickerPosition()
+						updateColor(color)
 					end,
 					GetColor = function()
 						return currentColor
 					end,
 				}
 			end;
-
 			return SectionTable;
 		end;
 
@@ -4311,149 +3995,5 @@ function Library:Console()
 
 	return overview;
 end;
-
-
-
-
-
--- Color Picker Functions
-Library.ColorPicker = {}
-
-function Library.ColorPicker.CreatePopup(title, currentColor, onColorChange)
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = game:GetService("CoreGui")
-    
-    local PopupFrame = Instance.new("Frame")
-    PopupFrame.Size = UDim2.new(0, 200, 0, 150)
-    PopupFrame.Position = UDim2.new(0, 100, 0, 100)
-    PopupFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    PopupFrame.BorderSizePixel = 0
-    PopupFrame.Parent = ScreenGui
-    
-    local UICorner = Instance.new("UICorner")
-    UICorner.CornerRadius = UDim.new(0, 8)
-    UICorner.Parent = PopupFrame
-    
-    local Title = Instance.new("TextLabel")
-    Title.Size = UDim2.new(1, 0, 0, 25)
-    Title.Position = UDim2.new(0, 0, 0, 0)
-    Title.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    Title.BorderSizePixel = 0
-    Title.Text = title
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextScaled = true
-    Title.Font = Enum.Font.SourceSansBold
-    Title.Parent = PopupFrame
-    
-    local UICorner2 = Instance.new("UICorner")
-    UICorner2.CornerRadius = UDim.new(0, 8)
-    UICorner2.Parent = Title
-    
-    local ColorPreview = Instance.new("Frame")
-    ColorPreview.Size = UDim2.new(0, 30, 0, 30)
-    ColorPreview.Position = UDim2.new(0, 10, 0, 35)
-    ColorPreview.BackgroundColor3 = currentColor
-    ColorPreview.BorderSizePixel = 0
-    ColorPreview.Parent = PopupFrame
-    
-    local UICorner3 = Instance.new("UICorner")
-    UICorner3.CornerRadius = UDim.new(0, 4)
-    UICorner3.Parent = ColorPreview
-    
-    local RGBLabel = Instance.new("TextLabel")
-    RGBLabel.Size = UDim2.new(1, -50, 0, 20)
-    RGBLabel.Position = UDim2.new(0, 50, 0, 35)
-    RGBLabel.BackgroundTransparency = 1
-    RGBLabel.Text = string.format("R: %d G: %d B: %d", 
-        math.floor(currentColor.R * 255),
-        math.floor(currentColor.G * 255),
-        math.floor(currentColor.B * 255))
-    RGBLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    RGBLabel.TextScaled = true
-    RGBLabel.Font = Enum.Font.SourceSans
-    RGBLabel.Parent = PopupFrame
-    
-    -- Quick color presets
-    local colors = {
-        Color3.fromRGB(255, 0, 0),   -- Red
-        Color3.fromRGB(0, 255, 0),   -- Green
-        Color3.fromRGB(0, 0, 255),   -- Blue
-        Color3.fromRGB(255, 255, 0), -- Yellow
-        Color3.fromRGB(255, 0, 255), -- Magenta
-        Color3.fromRGB(0, 255, 255), -- Cyan
-        Color3.fromRGB(255, 255, 255), -- White
-        Color3.fromRGB(0, 0, 0)      -- Black
-    }
-    
-    for i, color in pairs(colors) do
-        local ColorButton = Instance.new("TextButton")
-        ColorButton.Size = UDim2.new(0, 20, 0, 20)
-        ColorButton.Position = UDim2.new(0, 10 + ((i-1) % 4) * 25, 0, 70 + math.floor((i-1) / 4) * 25)
-        ColorButton.BackgroundColor3 = color
-        ColorButton.BorderSizePixel = 0
-        ColorButton.Text = ""
-        ColorButton.Parent = PopupFrame
-        
-        local UICorner4 = Instance.new("UICorner")
-        UICorner4.CornerRadius = UDim.new(0, 4)
-        UICorner4.Parent = ColorButton
-        
-        ColorButton.MouseButton1Click:Connect(function()
-            onColorChange(color)
-            ColorPreview.BackgroundColor3 = color
-            RGBLabel.Text = string.format("R: %d G: %d B: %d", 
-                math.floor(color.R * 255),
-                math.floor(color.G * 255),
-                math.floor(color.B * 255))
-        end)
-    end
-    
-    local CloseButton = Instance.new("TextButton")
-    CloseButton.Size = UDim2.new(0, 60, 0, 25)
-    CloseButton.Position = UDim2.new(0.5, -30, 1, -35)
-    CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-    CloseButton.BorderSizePixel = 0
-    CloseButton.Text = "Close"
-    CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    CloseButton.TextScaled = true
-    CloseButton.Font = Enum.Font.SourceSans
-    CloseButton.Parent = PopupFrame
-    
-    local UICorner5 = Instance.new("UICorner")
-    UICorner5.CornerRadius = UDim.new(0, 4)
-    UICorner5.Parent = CloseButton
-    
-    CloseButton.MouseButton1Click:Connect(function()
-        ScreenGui:Destroy()
-    end)
-    
-    -- Make popup draggable
-    local dragging = false
-    local dragStart = nil
-    local startPos = nil
-    
-    Title.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-            dragStart = input.Position
-            startPos = PopupFrame.Position
-        end
-    end)
-    
-    game:GetService("UserInputService").InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement and dragging then
-            local delta = input.Position - dragStart
-            PopupFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-    end)
-    
-    game:GetService("UserInputService").InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
-end
-
-
 
 return table.freeze(Library);
