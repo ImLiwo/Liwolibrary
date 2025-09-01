@@ -2811,8 +2811,10 @@ function Library.new(config)
 				end
 
 				-- Click to toggle window
-				icon.MouseButton1Click:Connect(function()
-					window.Visible = not window.Visible
+				icon.InputBegan:Connect(function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						window.Visible = not window.Visible
+					end
 				end)
 
 				-- Initialize
