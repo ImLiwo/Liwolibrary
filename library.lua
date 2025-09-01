@@ -2773,7 +2773,7 @@ function Library.new(config)
 				FunctionColorPicker.BackgroundTransparency = 0.800
 				FunctionColorPicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				FunctionColorPicker.BorderSizePixel = 0
-				FunctionColorPicker.Size = UDim2.new(0.949999988, 0, 0.5, 0)
+				FunctionColorPicker.Size = UDim2.new(0.949999988, 0, 0, 30)
 				FunctionColorPicker.ZIndex = 17
 
 				UIAspectRatioConstraint.Parent = FunctionColorPicker
@@ -2782,13 +2782,13 @@ function Library.new(config)
 
 				TextInt.Name = "TextInt"
 				TextInt.Parent = FunctionColorPicker
-				TextInt.AnchorPoint = Vector2.new(0.5, 0.5)
+				TextInt.AnchorPoint = Vector2.new(0, 0.5)
 				TextInt.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				TextInt.BackgroundTransparency = 1.000
 				TextInt.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				TextInt.BorderSizePixel = 0
-				TextInt.Position = UDim2.new(0.5, 0, 0.200000003, 0)
-				TextInt.Size = UDim2.new(0.949999988, 0, 0.319999993, 0)
+				TextInt.Position = UDim2.new(0, 8, 0.5, 0)
+				TextInt.Size = UDim2.new(0.6, 0, 0.8, 0)
 				TextInt.ZIndex = 18
 				TextInt.Font = Enum.Font.GothamBold
 				TextInt.Text = colorConfig.Title
@@ -2812,14 +2812,14 @@ function Library.new(config)
 
 				ColorFrame.Name = "ColorFrame"
 				ColorFrame.Parent = FunctionColorPicker
-				ColorFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+				ColorFrame.AnchorPoint = Vector2.new(1, 0.5)
 				ColorFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 				ColorFrame.BackgroundTransparency = 0.800
 				ColorFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorFrame.BorderSizePixel = 0
 				ColorFrame.ClipsDescendants = true
-				ColorFrame.Position = UDim2.new(0.5, 0, 0.699999988, 0)
-				ColorFrame.Size = UDim2.new(0.949999988, 0, 0.375, 0)
+				ColorFrame.Position = UDim2.new(1, -8, 0.5, 0)
+				ColorFrame.Size = UDim2.new(0, 20, 0, 20)
 				ColorFrame.ZIndex = 18
 
 				UICorner_2.CornerRadius = UDim.new(0, 2)
@@ -2836,7 +2836,7 @@ function Library.new(config)
 				ColorPreview.BorderColor3 = Color3.fromRGB(255, 255, 255)
 				ColorPreview.BorderSizePixel = 1
 				ColorPreview.Position = UDim2.new(0.5, 0, 0.5, 0)
-				ColorPreview.Size = UDim2.new(0.8, 0, 0.8, 0)
+				ColorPreview.Size = UDim2.new(1, -2, 1, -2)
 				ColorPreview.ZIndex = 19
 
 				UICorner_3.CornerRadius = UDim.new(0, 2)
