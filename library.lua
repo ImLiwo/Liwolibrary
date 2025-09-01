@@ -1880,7 +1880,6 @@ function Library.new(config)
 					Title = "Keybind",
 					Callback = function() end,
 					Default = Enum.KeyCode.E,
-
 				});
 
 				local BindEvent = Instance.new('BindableEvent',Section);
@@ -2793,12 +2792,12 @@ function Library.new(config)
 				-- Color picker popup window
 				local popup = Instance.new("Frame")
 				popup.Name = "ColorPickerPopup"
-				popup.Parent = holder
+				popup.Parent = game:GetService("CoreGui") -- Parent to CoreGui for proper layering
 				popup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 				popup.BorderColor3 = Color3.fromRGB(60, 60, 60)
 				popup.BorderSizePixel = 1
 				popup.Size = UDim2.new(0, 200, 0, 150)
-				popup.Position = UDim2.new(1, 5, 0, 0)
+				popup.Position = UDim2.new(0, 100, 0, 100) -- Fixed position for now
 				popup.ZIndex = 11
 				popup.Visible = false
 
@@ -2806,8 +2805,39 @@ function Library.new(config)
 				UICorner_popup.CornerRadius = UDim.new(0, 4)
 				UICorner_popup.Parent = popup
 
-				local currentColor = colorConfig.Default
+				-- Add some basic color buttons to the popup
+				local colors = {
+					Color3.fromRGB(255, 0, 0),   -- Red
+					Color3.fromRGB(0, 255, 0),   -- Green
+					Color3.fromRGB(0, 0, 255),   -- Blue
+					Color3.fromRGB(255, 255, 0), -- Yellow
+					Color3.fromRGB(255, 0, 255), -- Magenta
+					Color3.fromRGB(0, 255, 255), -- Cyan
+					Color3.fromRGB(255, 255, 255), -- White
+					Color3.fromRGB(0, 0, 0),     -- Black
+				}
 
+				for i, color in ipairs(colors) do
+					local colorButton = Instance.new("TextButton")
+					colorButton.Size = UDim2.new(0, 20, 0, 20)
+					colorButton.Position = UDim2.new(0, 10 + ((i-1) % 4) * 25, 0, 10 + math.floor((i-1) / 4) * 25)
+					colorButton.BackgroundColor3 = color
+					colorButton.BorderSizePixel = 0
+					colorButton.Text = ""
+					colorButton.Parent = popup
+					
+					local UICorner_color = Instance.new("UICorner")
+					UICorner_color.CornerRadius = UDim.new(0, 3)
+					UICorner_color.Parent = colorButton
+					
+					colorButton.MouseButton1Click:Connect(function()
+						updateColor(color)
+						popup.Visible = false
+					end)
+				end
+				
+				local currentColor = colorConfig.Default
+				
 				-- Update color function
 				local function updateColor(newColor)
 					currentColor = newColor
@@ -2819,6 +2849,7 @@ function Library.new(config)
 				colorSquare.InputBegan:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 then
 						popup.Visible = not popup.Visible
+						print("Color picker clicked, popup visible:", popup.Visible) -- Debug
 					end
 				end)
 
