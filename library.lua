@@ -2753,60 +2753,180 @@ function Library.new(config)
 					Callback = function(color) end,
 				})
 
-				-- Create the embedded color picker container
-				local ColorPickerContainer = Instance.new("Frame")
-				local UICorner = Instance.new("UICorner")
-				local UIStroke = Instance.new("UIStroke")
-				local Title = Instance.new("TextLabel")
+				-- Create the main color picker frame (small compact version)
+				local FunctionColorPicker = Instance.new("Frame")
+				local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+				local TextInt = Instance.new("TextLabel")
 				local UIGradient = Instance.new("UIGradient")
+				local UIStroke = Instance.new("UIStroke")
+				local UICorner = Instance.new("UICorner")
+				local ColorFrame = Instance.new("Frame")
+				local UICorner_2 = Instance.new("UICorner")
+				local UIStroke_2 = Instance.new("UIStroke")
+				local ColorPreview = Instance.new("Frame")
+				local UICorner_3 = Instance.new("UICorner")
+				local Button = Instance.new("TextButton")
+
+				FunctionColorPicker.Name = "FunctionColorPicker"
+				FunctionColorPicker.Parent = Section
+				FunctionColorPicker.BackgroundColor3 = Color3.fromRGB(17, 17, 17)
+				FunctionColorPicker.BackgroundTransparency = 0.800
+				FunctionColorPicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				FunctionColorPicker.BorderSizePixel = 0
+				FunctionColorPicker.Size = UDim2.new(0.949999988, 0, 0.5, 0)
+				FunctionColorPicker.ZIndex = 17
+
+				UIAspectRatioConstraint.Parent = FunctionColorPicker
+				UIAspectRatioConstraint.AspectRatio = 5.000
+				UIAspectRatioConstraint.AspectType = Enum.AspectType.ScaleWithParentSize
+
+				TextInt.Name = "TextInt"
+				TextInt.Parent = FunctionColorPicker
+				TextInt.AnchorPoint = Vector2.new(0.5, 0.5)
+				TextInt.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TextInt.BackgroundTransparency = 1.000
+				TextInt.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				TextInt.BorderSizePixel = 0
+				TextInt.Position = UDim2.new(0.5, 0, 0.200000003, 0)
+				TextInt.Size = UDim2.new(0.949999988, 0, 0.319999993, 0)
+				TextInt.ZIndex = 18
+				TextInt.Font = Enum.Font.GothamBold
+				TextInt.Text = colorConfig.Title
+				TextInt.TextColor3 = Color3.fromRGB(255, 255, 255)
+				TextInt.TextScaled = true
+				TextInt.TextSize = 14.000
+				TextInt.TextTransparency = 0.250
+				TextInt.TextWrapped = true
+				TextInt.TextXAlignment = Enum.TextXAlignment.Left
+
+				UIGradient.Rotation = 90
+				UIGradient.Transparency = NumberSequence.new{NumberSequenceKeypoint.new(0.00, 0.00), NumberSequenceKeypoint.new(0.84, 0.25), NumberSequenceKeypoint.new(1.00, 1.00)}
+				UIGradient.Parent = TextInt
+
+				UIStroke.Transparency = 0.950
+				UIStroke.Color = Color3.fromRGB(255, 255, 255)
+				UIStroke.Parent = FunctionColorPicker
+
+				UICorner.CornerRadius = UDim.new(0, 2)
+				UICorner.Parent = FunctionColorPicker
+
+				ColorFrame.Name = "ColorFrame"
+				ColorFrame.Parent = FunctionColorPicker
+				ColorFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+				ColorFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+				ColorFrame.BackgroundTransparency = 0.800
+				ColorFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				ColorFrame.BorderSizePixel = 0
+				ColorFrame.ClipsDescendants = true
+				ColorFrame.Position = UDim2.new(0.5, 0, 0.699999988, 0)
+				ColorFrame.Size = UDim2.new(0.949999988, 0, 0.375, 0)
+				ColorFrame.ZIndex = 18
+
+				UICorner_2.CornerRadius = UDim.new(0, 2)
+				UICorner_2.Parent = ColorFrame
+
+				UIStroke_2.Transparency = 0.975
+				UIStroke_2.Color = Color3.fromRGB(255, 255, 255)
+				UIStroke_2.Parent = ColorFrame
+
+				ColorPreview.Name = "ColorPreview"
+				ColorPreview.Parent = ColorFrame
+				ColorPreview.AnchorPoint = Vector2.new(0.5, 0.5)
+				ColorPreview.BackgroundColor3 = colorConfig.Default
+				ColorPreview.BorderColor3 = Color3.fromRGB(255, 255, 255)
+				ColorPreview.BorderSizePixel = 1
+				ColorPreview.Position = UDim2.new(0.5, 0, 0.5, 0)
+				ColorPreview.Size = UDim2.new(0.8, 0, 0.8, 0)
+				ColorPreview.ZIndex = 19
+
+				UICorner_3.CornerRadius = UDim.new(0, 2)
+				UICorner_3.Parent = ColorPreview
+
+				Button.Name = "Button"
+				Button.Parent = FunctionColorPicker
+				Button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Button.BackgroundTransparency = 1.000
+				Button.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Button.BorderSizePixel = 0
+				Button.Size = UDim2.new(1, 0, 1, 0)
+				Button.ZIndex = 25
+				Button.Font = Enum.Font.SourceSans
+				Button.Text = ""
+				Button.TextColor3 = Color3.fromRGB(0, 0, 0)
+				Button.TextSize = 14.000
+				Button.TextTransparency = 1.000
+
+				-- Create the large color picker popup (hidden by default)
+				local ColorPickerPopup = Instance.new("Frame")
+				local UICorner_4 = Instance.new("UICorner")
+				local DropShadow = Instance.new("ImageLabel")
+				local UIStroke_3 = Instance.new("UIStroke")
+				local Title = Instance.new("TextLabel")
+				local UIGradient_2 = Instance.new("UIGradient")
 				
 				-- Main color selection area (large square)
 				local ColorSelectionArea = Instance.new("Frame")
-				local UICorner_2 = Instance.new("UICorner")
-				local UIStroke_2 = Instance.new("UIStroke")
+				local UICorner_5 = Instance.new("UICorner")
+				local UIStroke_4 = Instance.new("UIStroke")
 				local ColorWheel = Instance.new("ImageLabel")
-				local UICorner_3 = Instance.new("UICorner")
+				local UICorner_6 = Instance.new("UICorner")
 				local ColorPicker = Instance.new("Frame")
-				local UICorner_4 = Instance.new("UICorner")
-				local UIStroke_3 = Instance.new("UIStroke")
+				local UICorner_7 = Instance.new("UICorner")
+				local UIStroke_5 = Instance.new("UIStroke")
 				
 				-- Hue slider (horizontal rainbow)
 				local HueSlider = Instance.new("Frame")
-				local UICorner_5 = Instance.new("UICorner")
-				local UIStroke_4 = Instance.new("UIStroke")
+				local UICorner_8 = Instance.new("UICorner")
+				local UIStroke_6 = Instance.new("UIStroke")
 				local HueGradient = Instance.new("UIGradient")
 				local HuePicker = Instance.new("Frame")
-				local UICorner_6 = Instance.new("UICorner")
-				local UIStroke_5 = Instance.new("UIStroke")
+				local UICorner_9 = Instance.new("UICorner")
+				local UIStroke_7 = Instance.new("UIStroke")
 				
 				-- RGB input display
 				local RGBDisplay = Instance.new("TextLabel")
-				local UIGradient_2 = Instance.new("UIGradient")
+				local UIGradient_3 = Instance.new("UIGradient")
 
-				ColorPickerContainer.Name = "ColorPickerContainer"
-				ColorPickerContainer.Parent = Section
-				ColorPickerContainer.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-				ColorPickerContainer.BackgroundTransparency = 0.100
-				ColorPickerContainer.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				ColorPickerContainer.BorderSizePixel = 0
-				ColorPickerContainer.Size = UDim2.new(1, 0, 0, 200)
-				ColorPickerContainer.ZIndex = 17
+				ColorPickerPopup.Name = "ColorPickerPopup"
+				ColorPickerPopup.Parent = ScreenGui
+				ColorPickerPopup.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+				ColorPickerPopup.BackgroundTransparency = 0.100
+				ColorPickerPopup.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				ColorPickerPopup.BorderSizePixel = 0
+				ColorPickerPopup.Position = UDim2.new(0.75, 0, 0.1, 0)
+				ColorPickerPopup.Size = UDim2.new(0, 200, 0, 280)
+				ColorPickerPopup.ZIndex = 100
+				ColorPickerPopup.Visible = false
 
-				UICorner.CornerRadius = UDim.new(0, 8)
-				UICorner.Parent = ColorPickerContainer
+				UICorner_4.CornerRadius = UDim.new(0, 8)
+				UICorner_4.Parent = ColorPickerPopup
 
-				UIStroke.Color = Color3.fromRGB(60, 60, 60)
-				UIStroke.Parent = ColorPickerContainer
+				DropShadow.Name = "DropShadow"
+				DropShadow.Parent = ColorPickerPopup
+				DropShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+				DropShadow.BackgroundTransparency = 1.000
+				DropShadow.BorderSizePixel = 0
+				DropShadow.Position = UDim2.new(0.5, 0, 0.5, 0)
+				DropShadow.Size = UDim2.new(1, 20, 1, 20)
+				DropShadow.ZIndex = 99
+				DropShadow.Image = "rbxassetid://6015897843"
+				DropShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+				DropShadow.ImageTransparency = 0.600
+				DropShadow.ScaleType = Enum.ScaleType.Slice
+				DropShadow.SliceCenter = Rect.new(49, 49, 450, 450)
+
+				UIStroke_3.Color = Color3.fromRGB(60, 60, 60)
+				UIStroke_3.Parent = ColorPickerPopup
 
 				Title.Name = "Title"
-				Title.Parent = ColorPickerContainer
+				Title.Parent = ColorPickerPopup
 				Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Title.BackgroundTransparency = 1.000
 				Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Title.BorderSizePixel = 0
 				Title.Position = UDim2.new(0, 8, 0, 8)
 				Title.Size = UDim2.new(0.5, 0, 0, 20)
-				Title.ZIndex = 18
+				Title.ZIndex = 101
 				Title.Font = Enum.Font.GothamBold
 				Title.Text = colorConfig.Title
 				Title.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -2815,24 +2935,24 @@ function Library.new(config)
 				Title.TextWrapped = true
 				Title.TextXAlignment = Enum.TextXAlignment.Left
 
-				UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
-				UIGradient.Parent = Title
+				UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
+				UIGradient_2.Parent = Title
 
 				-- Main color selection area (large square for hue/saturation)
 				ColorSelectionArea.Name = "ColorSelectionArea"
-				ColorSelectionArea.Parent = ColorPickerContainer
+				ColorSelectionArea.Parent = ColorPickerPopup
 				ColorSelectionArea.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				ColorSelectionArea.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorSelectionArea.BorderSizePixel = 0
 				ColorSelectionArea.Position = UDim2.new(0, 8, 0, 32)
 				ColorSelectionArea.Size = UDim2.new(0, 120, 0, 120)
-				ColorSelectionArea.ZIndex = 18
+				ColorSelectionArea.ZIndex = 101
 
-				UICorner_2.CornerRadius = UDim.new(0, 4)
-				UICorner_2.Parent = ColorSelectionArea
+				UICorner_5.CornerRadius = UDim.new(0, 4)
+				UICorner_5.Parent = ColorSelectionArea
 
-				UIStroke_2.Color = Color3.fromRGB(60, 60, 60)
-				UIStroke_2.Parent = ColorSelectionArea
+				UIStroke_4.Color = Color3.fromRGB(60, 60, 60)
+				UIStroke_4.Parent = ColorSelectionArea
 
 				ColorWheel.Name = "ColorWheel"
 				ColorWheel.Parent = ColorSelectionArea
@@ -2840,12 +2960,12 @@ function Library.new(config)
 				ColorWheel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ColorWheel.BorderSizePixel = 0
 				ColorWheel.Size = UDim2.new(1, 0, 1, 0)
-				ColorWheel.ZIndex = 19
+				ColorWheel.ZIndex = 102
 				ColorWheel.Image = "rbxassetid://14042013399" -- Color wheel image
 				ColorWheel.ImageTransparency = 0
 
-				UICorner_3.CornerRadius = UDim.new(0, 4)
-				UICorner_3.Parent = ColorWheel
+				UICorner_6.CornerRadius = UDim.new(0, 4)
+				UICorner_6.Parent = ColorWheel
 
 				ColorPicker.Name = "ColorPicker"
 				ColorPicker.Parent = ColorSelectionArea
@@ -2854,30 +2974,30 @@ function Library.new(config)
 				ColorPicker.BorderSizePixel = 0
 				ColorPicker.Position = UDim2.new(0, 0, 0, 0)
 				ColorPicker.Size = UDim2.new(0, 8, 0, 8)
-				ColorPicker.ZIndex = 20
+				ColorPicker.ZIndex = 103
 
-				UICorner_4.CornerRadius = UDim.new(0.5, 0)
-				UICorner_4.Parent = ColorPicker
+				UICorner_7.CornerRadius = UDim.new(0.5, 0)
+				UICorner_7.Parent = ColorPicker
 
-				UIStroke_3.Color = Color3.fromRGB(0, 0, 0)
-				UIStroke_3.Thickness = 2
-				UIStroke_3.Parent = ColorPicker
+				UIStroke_5.Color = Color3.fromRGB(0, 0, 0)
+				UIStroke_5.Thickness = 2
+				UIStroke_5.Parent = ColorPicker
 
 				-- Hue slider (horizontal rainbow)
 				HueSlider.Name = "HueSlider"
-				HueSlider.Parent = ColorPickerContainer
+				HueSlider.Parent = ColorPickerPopup
 				HueSlider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				HueSlider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				HueSlider.BorderSizePixel = 0
 				HueSlider.Position = UDim2.new(0, 8, 0, 160)
 				HueSlider.Size = UDim2.new(0, 120, 0, 12)
-				HueSlider.ZIndex = 18
+				HueSlider.ZIndex = 101
 
-				UICorner_5.CornerRadius = UDim.new(0.5, 0)
-				UICorner_5.Parent = HueSlider
+				UICorner_8.CornerRadius = UDim.new(0.5, 0)
+				UICorner_8.Parent = HueSlider
 
-				UIStroke_4.Color = Color3.fromRGB(60, 60, 60)
-				UIStroke_4.Parent = HueSlider
+				UIStroke_6.Color = Color3.fromRGB(60, 60, 60)
+				UIStroke_6.Parent = HueSlider
 
 				HueGradient.Color = ColorSequence.new{
 					ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)),
@@ -2897,44 +3017,50 @@ function Library.new(config)
 				HuePicker.BorderSizePixel = 0
 				HuePicker.Position = UDim2.new(0, 0, 0, 0)
 				HuePicker.Size = UDim2.new(0, 2, 1, 0)
-				HuePicker.ZIndex = 19
+				HuePicker.ZIndex = 102
 
-				UICorner_6.CornerRadius = UDim.new(0.5, 0)
-				UICorner_6.Parent = HuePicker
+				UICorner_9.CornerRadius = UDim.new(0.5, 0)
+				UICorner_9.Parent = HuePicker
 
-				UIStroke_5.Color = Color3.fromRGB(0, 0, 0)
-				UIStroke_5.Thickness = 1
-				UIStroke_5.Parent = HuePicker
+				UIStroke_7.Color = Color3.fromRGB(0, 0, 0)
+				UIStroke_7.Thickness = 1
+				UIStroke_7.Parent = HuePicker
 
 				-- RGB display
 				RGBDisplay.Name = "RGBDisplay"
-				RGBDisplay.Parent = ColorPickerContainer
+				RGBDisplay.Parent = ColorPickerPopup
 				RGBDisplay.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				RGBDisplay.BackgroundTransparency = 1.000
 				RGBDisplay.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				RGBDisplay.BorderSizePixel = 0
 				RGBDisplay.Position = UDim2.new(0, 8, 0, 180)
 				RGBDisplay.Size = UDim2.new(1, -16, 0, 16)
-				RGBDisplay.ZIndex = 18
+				RGBDisplay.ZIndex = 101
 				RGBDisplay.Font = Enum.Font.Gotham
 				RGBDisplay.Text = string.format("%d, %d, %d", math.floor(colorConfig.Default.R * 255), math.floor(colorConfig.Default.G * 255), math.floor(colorConfig.Default.B * 255))
 				RGBDisplay.TextColor3 = Color3.fromRGB(255, 255, 255)
 				RGBDisplay.TextSize = 12.000
 				RGBDisplay.TextXAlignment = Enum.TextXAlignment.Left
 
-				UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
-				UIGradient_2.Parent = RGBDisplay
+				UIGradient_3.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))}
+				UIGradient_3.Parent = RGBDisplay
 
 				-- Variables
 				local currentColor = colorConfig.Default
 				local hue, saturation, value = currentColor:ToHSV()
+				local isOpen = false
 
 				-- Functions
+				local function updateColorPreview()
+					ColorPreview.BackgroundColor3 = currentColor
+				end
+
 				local function updateColor()
 					currentColor = Color3.fromHSV(hue, saturation, value)
 					ColorWheel.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
 					RGBDisplay.Text = string.format("%d, %d, %d", math.floor(currentColor.R * 255), math.floor(currentColor.G * 255), math.floor(currentColor.B * 255))
 					colorConfig.Callback(currentColor)
+					updateColorPreview()
 				end
 
 				local function updateColorPickerPosition()
@@ -2946,6 +3072,38 @@ function Library.new(config)
 				local function updateHuePickerPosition()
 					local x = hue * HueSlider.AbsoluteSize.X
 					HuePicker.Position = UDim2.new(0, math.clamp(x - 1, 0, HueSlider.AbsoluteSize.X - 2), 0, 0)
+				end
+
+				local function openColorPicker()
+					if isOpen then return end
+					isOpen = true
+					
+					ColorPickerPopup.Visible = true
+					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
+						BackgroundTransparency = 0.1,
+						Size = UDim2.new(0, 200, 0, 280)
+					}):Play()
+					
+					Twen:Create(DropShadow, TweenInfo.new(0.3), {
+						ImageTransparency = 0.6
+					}):Play()
+				end
+
+				local function closeColorPicker()
+					if not isOpen then return end
+					isOpen = false
+					
+					Twen:Create(ColorPickerPopup, TweenInfo.new(0.3), {
+						BackgroundTransparency = 1,
+						Size = UDim2.new(0, 0, 0, 0)
+					}):Play()
+					
+					Twen:Create(DropShadow, TweenInfo.new(0.3), {
+						ImageTransparency = 1
+					}):Play()
+					
+					task.wait(0.3)
+					ColorPickerPopup.Visible = false
 				end
 
 				-- Mouse interactions for color selection area
@@ -2981,18 +3139,31 @@ function Library.new(config)
 					end
 				end
 
-				-- Connect input events
+				-- Button click to open color picker
+				Button.MouseButton1Click:Connect(openColorPicker)
+
+				-- Connect input events for the popup
 				ColorSelectionArea.InputBegan:Connect(onColorAreaInput)
 				HueSlider.InputBegan:Connect(onHueSliderInput)
 
-				-- Initialize positions
+				-- Close color picker when clicking outside
+				Input.InputBegan:Connect(function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						if isOpen and not ColorPickerPopup:IsDescendantOf(game.Players.LocalPlayer.PlayerGui) then
+							closeColorPicker()
+						end
+					end
+				end)
+
+				-- Initialize
+				updateColorPreview()
 				updateColorPickerPosition()
 				updateHuePickerPosition()
 				updateColor()
 
 				return {
 					Visible = function(newindx)
-						ColorPickerContainer.Visible = newindx
+						FunctionColorPicker.Visible = newindx
 					end,
 					Value = function(color)
 						currentColor = color
