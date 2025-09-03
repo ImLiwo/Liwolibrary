@@ -22,6 +22,7 @@ end)() or {};
 
 -- Key mapping table for keybind display
 local keys = {
+	-- Modifier keys
 	[Enum.KeyCode.LeftShift] = "L-SHIFT",
 	[Enum.KeyCode.RightShift] = "R-SHIFT",
 	[Enum.KeyCode.LeftControl] = "L-CTRL",
@@ -29,6 +30,8 @@ local keys = {
 	[Enum.KeyCode.LeftAlt] = "L-ALT",
 	[Enum.KeyCode.RightAlt] = "R-ALT",
 	[Enum.KeyCode.CapsLock] = "CAPSLOCK",
+	
+	-- Numbers
 	[Enum.KeyCode.One] = "1",
 	[Enum.KeyCode.Two] = "2",
 	[Enum.KeyCode.Three] = "3",
@@ -39,6 +42,8 @@ local keys = {
 	[Enum.KeyCode.Eight] = "8",
 	[Enum.KeyCode.Nine] = "9",
 	[Enum.KeyCode.Zero] = "0",
+	
+	-- Keypad numbers
 	[Enum.KeyCode.KeypadOne] = "NUM-1",
 	[Enum.KeyCode.KeypadTwo] = "NUM-2",
 	[Enum.KeyCode.KeypadThree] = "NUM-3",
@@ -49,6 +54,67 @@ local keys = {
 	[Enum.KeyCode.KeypadEight] = "NUM-8",
 	[Enum.KeyCode.KeypadNine] = "NUM-9",
 	[Enum.KeyCode.KeypadZero] = "NUM-0",
+	
+	-- Letters (A-Z)
+	[Enum.KeyCode.A] = "A",
+	[Enum.KeyCode.B] = "B",
+	[Enum.KeyCode.C] = "C",
+	[Enum.KeyCode.D] = "D",
+	[Enum.KeyCode.E] = "E",
+	[Enum.KeyCode.F] = "F",
+	[Enum.KeyCode.G] = "G",
+	[Enum.KeyCode.H] = "H",
+	[Enum.KeyCode.I] = "I",
+	[Enum.KeyCode.J] = "J",
+	[Enum.KeyCode.K] = "K",
+	[Enum.KeyCode.L] = "L",
+	[Enum.KeyCode.M] = "M",
+	[Enum.KeyCode.N] = "N",
+	[Enum.KeyCode.O] = "O",
+	[Enum.KeyCode.P] = "P",
+	[Enum.KeyCode.Q] = "Q",
+	[Enum.KeyCode.R] = "R",
+	[Enum.KeyCode.S] = "S",
+	[Enum.KeyCode.T] = "T",
+	[Enum.KeyCode.U] = "U",
+	[Enum.KeyCode.V] = "V",
+	[Enum.KeyCode.W] = "W",
+	[Enum.KeyCode.X] = "X",
+	[Enum.KeyCode.Y] = "Y",
+	[Enum.KeyCode.Z] = "Z",
+	
+	-- Function keys
+	[Enum.KeyCode.F1] = "F1",
+	[Enum.KeyCode.F2] = "F2",
+	[Enum.KeyCode.F3] = "F3",
+	[Enum.KeyCode.F4] = "F4",
+	[Enum.KeyCode.F5] = "F5",
+	[Enum.KeyCode.F6] = "F6",
+	[Enum.KeyCode.F7] = "F7",
+	[Enum.KeyCode.F8] = "F8",
+	[Enum.KeyCode.F9] = "F9",
+	[Enum.KeyCode.F10] = "F10",
+	[Enum.KeyCode.F11] = "F11",
+	[Enum.KeyCode.F12] = "F12",
+	
+	-- Special keys
+	[Enum.KeyCode.Space] = "SPACE",
+	[Enum.KeyCode.Return] = "ENTER",
+	[Enum.KeyCode.Backspace] = "BACKSPACE",
+	[Enum.KeyCode.Tab] = "TAB",
+	[Enum.KeyCode.Escape] = "ESC",
+	[Enum.KeyCode.Delete] = "DEL",
+	[Enum.KeyCode.Insert] = "INS",
+	[Enum.KeyCode.Home] = "HOME",
+	[Enum.KeyCode.End] = "END",
+	[Enum.KeyCode.PageUp] = "PGUP",
+	[Enum.KeyCode.PageDown] = "PGDN",
+	[Enum.KeyCode.Up] = "UP",
+	[Enum.KeyCode.Down] = "DOWN",
+	[Enum.KeyCode.Left] = "LEFT",
+	[Enum.KeyCode.Right] = "RIGHT",
+	
+	-- Symbols
 	[Enum.KeyCode.Minus] = "-",
 	[Enum.KeyCode.Equals] = "=",
 	[Enum.KeyCode.Tilde] = "~",
@@ -65,9 +131,11 @@ local keys = {
 	[Enum.KeyCode.Asterisk] = "*",
 	[Enum.KeyCode.Plus] = "+",
 	[Enum.KeyCode.Backquote] = "`",
-	[Enum.UserInputType.MouseButton1] = "MOUSE-1",
-	[Enum.UserInputType.MouseButton2] = "MOUSE-2",
-	[Enum.UserInputType.MouseButton3] = "MOUSE-3"
+	
+	-- Mouse buttons
+	[Enum.UserInputType.MouseButton1] = "LMB",
+	[Enum.UserInputType.MouseButton2] = "RMB",
+	[Enum.UserInputType.MouseButton3] = "MMB"
 }
 
 local ElBlurSource = function()
@@ -1994,22 +2062,36 @@ function Library.new(config)
 					-- Handle different input types
 					if typeof(new) == 'string' then
 						displayText = new
-					elseif new.UserInputType then
-						-- Mouse button names
-						if new.UserInputType == Enum.UserInputType.MouseButton1 then
-							displayText = "LMB"
-						elseif new.UserInputType == Enum.UserInputType.MouseButton2 then
-							displayText = "RMB"
-						elseif new.UserInputType == Enum.UserInputType.MouseButton3 then
-							displayText = "MMB"
-						else
-							displayText = new.UserInputType.Name
-						end
-					elseif new.Name then
-						-- KeyCode names
-						displayText = new.Name
 					else
-						displayText = tostring(new)
+						-- Safely check for UserInputType property
+						local hasUserInputType, userInputType = pcall(function() return new.UserInputType end)
+						
+						if hasUserInputType and userInputType then
+							-- Mouse button names
+							if userInputType == Enum.UserInputType.MouseButton1 then
+								displayText = "LMB"
+							elseif userInputType == Enum.UserInputType.MouseButton2 then
+								displayText = "RMB"
+							elseif userInputType == Enum.UserInputType.MouseButton3 then
+								displayText = "MMB"
+							else
+								displayText = userInputType.Name
+							end
+						else
+							-- Try to get Name property (for KeyCode enums)
+							local hasName, name = pcall(function() return new.Name end)
+							if hasName and name then
+								-- Check if we have a custom display name for this key
+								if keys[new] then
+									displayText = keys[new]
+								else
+									-- Use the key name, but format it nicely
+									displayText = name:gsub("^%l", string.upper) -- Capitalize first letter
+								end
+							else
+								displayText = tostring(new)
+							end
+						end
 					end
 					
 					Bindkey.Text = displayText
